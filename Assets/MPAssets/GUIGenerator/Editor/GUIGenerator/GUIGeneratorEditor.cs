@@ -70,7 +70,10 @@ public class GUIGeneratorEditor : Editor
 			HierarchyChanged();
 		}
 		GUILayout.EndHorizontal();
-		
+
+		EditorGUILayout.LabelField("(Change only if MPAssets folder path is changed.)");
+		myScript.directory_DataPath = EditorGUILayout.TextField("Data Path", myScript.directory_DataPath);
+
 		GUILayout.Space(20);
 
 		if (GUILayout.Button("Generate Files"))
@@ -99,11 +102,41 @@ public class GUIGeneratorEditor : Editor
 				GenerateFiles();
 			}
 		}
+
+		if (GUILayout.Button("Generate Animation File")) {
+			if (myScript.AnimationFileExists()) {
+				string str = "Animation file already exists.";
+
+				str += "\n\nDo you wish to proceed?";
+
+				if (EditorUtility.DisplayDialog("Files in Conflict", str, "Yes", "No")) {
+					Debug.Log("YES");
+
+					myScript.activeScreen = selected;
+
+					GenerateAnimationFile();
+				}
+				else {
+					Debug.Log("NO");
+				}
+			}
+			else {
+				GenerateAnimationFile();
+			}
+		}
+
+
 	}
 
 	void GenerateFiles(){
 		myScript.GenerateFiles();
 		
 		EditorUtility.DisplayDialog("Generation Successful", "Files Generated!", "Ok");
+	}
+
+	void GenerateAnimationFile() {
+		myScript.GenerateAnimationFile();
+
+		EditorUtility.DisplayDialog("Generation Successful", "Animation File Generated!", "Ok");
 	}
 }

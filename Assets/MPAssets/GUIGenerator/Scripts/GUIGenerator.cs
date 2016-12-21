@@ -6,6 +6,8 @@ using System.IO;
 [RequireComponent (typeof (Canvas))]
 public class GUIGenerator : MonoBehaviour {
 	#region VARIABLES
+	[HideInInspector]
+	public string directory_DataPath = "MPAssets/GUIGenerator/Data";
 	string directory_mainScripts = "";
 	string directory_GUIGeneratorMain = "";
 	string directory_GUIGeneratorScripts = "";
@@ -29,6 +31,14 @@ public class GUIGenerator : MonoBehaviour {
 		}
 		else {
 			canvasName = "";
+		}
+
+		if (! (directory_DataPath.StartsWith("/") || directory_DataPath.StartsWith("\\"))) {
+			directory_DataPath = "/" + directory_DataPath;
+		}
+
+		if (!(directory_DataPath.EndsWith("/") || directory_DataPath.EndsWith("\\"))) {
+			directory_DataPath = directory_DataPath + "/";
 		}
 	}
 
@@ -84,7 +94,7 @@ public class GUIGenerator : MonoBehaviour {
 		CreateControllerFile(list);
 		
 		//Create the Animation File
-		CreateAnimationFile();
+		//CreateAnimationFile();
 
 		//Create the Class File
 		CreateClassesFile();
@@ -619,51 +629,52 @@ public class GUIGenerator : MonoBehaviour {
 
 	#region FILE_ANIMATION
 	void CreateAnimationFile(){
-		string className = GUIGenerator_Macros.text_classPrefix + GUIGenerator_Macros.file_animation;
-		string classContent = "";
+		//string className = GUIGenerator_Macros.text_classPrefix + GUIGenerator_Macros.file_animation;
+		//string classContent = "";
 		
-		classContent += GUIGenerator_Macros.text_includes;
-		classContent += GUIGenerator_Macros.text_classDeclaration.Replace(GUIGenerator_Macros.replacement_name, className);
+		//classContent += GUIGenerator_Macros.text_includes;
+		//classContent += GUIGenerator_Macros.text_classDeclaration.Replace(GUIGenerator_Macros.replacement_name, className);
 
-		//VARIABLES
-		classContent += GUIGenerator_Macros.text_regionBegin.Replace(GUIGenerator_Macros.replacement_name, GUIGenerator_Macros.text_regionMacro_Variables);
-		classContent += GUIGenerator_Macros.text_variableAnimationInstance.Replace(GUIGenerator_Macros.replacement_variable, className);
-		//classContent += GUIGenerator_Macros.text_variableAnimationTime;
-		classContent += GUIGenerator_Macros.text_regionEnd;
-		classContent += "\n";
+		////VARIABLES
+		//classContent += GUIGenerator_Macros.text_regionBegin.Replace(GUIGenerator_Macros.replacement_name, GUIGenerator_Macros.text_regionMacro_Variables);
+		//classContent += GUIGenerator_Macros.text_variableAnimationInstance.Replace(GUIGenerator_Macros.replacement_variable, className);
+		////classContent += GUIGenerator_Macros.text_variableAnimationTime;
+		//classContent += GUIGenerator_Macros.text_regionEnd;
+		//classContent += "\n";
 
-		//SHOW/HIDE
-		classContent += GUIGenerator_Macros.text_regionBegin.Replace(GUIGenerator_Macros.replacement_name, GUIGenerator_Macros.text_regionMacro_AnimationShowHide);
-		classContent += GUIGenerator_Macros.text_function_ShowMenu + "\n";
-		classContent += GUIGenerator_Macros.text_function_HideMenu;
-		classContent += GUIGenerator_Macros.text_regionEnd;
-		classContent += "\n";
+		////SHOW/HIDE
+		//classContent += GUIGenerator_Macros.text_regionBegin.Replace(GUIGenerator_Macros.replacement_name, GUIGenerator_Macros.text_regionMacro_AnimationShowHide);
+		//classContent += GUIGenerator_Macros.text_function_ShowMenu + "\n";
+		//classContent += GUIGenerator_Macros.text_function_HideMenu;
+		//classContent += GUIGenerator_Macros.text_regionEnd;
+		//classContent += "\n";
 
-		//SLIDE
-		classContent += GUIGenerator_Macros.text_regionBegin.Replace(GUIGenerator_Macros.replacement_name, GUIGenerator_Macros.text_regionMacro_AnimationSlide);
-		classContent += GUIGenerator_Macros.text_functionSideBase 	+ "\n";
-		classContent += GUIGenerator_Macros.text_functionSlidePanel + "\n";
-		classContent += GUIGenerator_Macros.text_functionSideBringRight + "\n";
-		classContent += GUIGenerator_Macros.text_functionSideBringLeft 	+ "\n";
-		classContent += GUIGenerator_Macros.text_functionSideRemoveRight+ "\n";
-		classContent += GUIGenerator_Macros.text_functionSideRemoveLeft + "\n";
-		classContent += GUIGenerator_Macros.text_functionSideBringTop + "\n";
-		classContent += GUIGenerator_Macros.text_functionSideBringBottom + "\n";
-		classContent += GUIGenerator_Macros.text_functionSideRemoveTop + "\n";
-		classContent += GUIGenerator_Macros.text_functionSideRemoveBottom + "\n";
-		classContent += GUIGenerator_Macros.text_functionSideBaseInstance + "\n";
-		classContent += GUIGenerator_Macros.text_regionEnd;
-		classContent += "\n";
+		////SLIDE
+		//classContent += GUIGenerator_Macros.text_regionBegin.Replace(GUIGenerator_Macros.replacement_name, GUIGenerator_Macros.text_regionMacro_AnimationSlide);
+		//classContent += GUIGenerator_Macros.text_functionSideBase 	+ "\n";
+		//classContent += GUIGenerator_Macros.text_functionSlidePanel + "\n";
+		//classContent += GUIGenerator_Macros.text_functionSideBringRight + "\n";
+		//classContent += GUIGenerator_Macros.text_functionSideBringLeft 	+ "\n";
+		//classContent += GUIGenerator_Macros.text_functionSideRemoveRight+ "\n";
+		//classContent += GUIGenerator_Macros.text_functionSideRemoveLeft + "\n";
+		//classContent += GUIGenerator_Macros.text_functionSideBringTop + "\n";
+		//classContent += GUIGenerator_Macros.text_functionSideBringBottom + "\n";
+		//classContent += GUIGenerator_Macros.text_functionSideRemoveTop + "\n";
+		//classContent += GUIGenerator_Macros.text_functionSideRemoveBottom + "\n";
+		//classContent += GUIGenerator_Macros.text_functionSideBaseInstance + "\n";
+		//classContent += GUIGenerator_Macros.text_regionEnd;
+		//classContent += "\n";
 
-		//UNITYCALLBACKS
-		classContent += GUIGenerator_Macros.text_regionBegin.Replace(GUIGenerator_Macros.replacement_name, GUIGenerator_Macros.text_regionMacro_UnityCallbacks);		
-		classContent += GUIGenerator_Macros.text_functionAnimationAwake.Replace(GUIGenerator_Macros.replacement_variable, className);	
-		classContent += GUIGenerator_Macros.text_regionEnd;
+		////UNITYCALLBACKS
+		//classContent += GUIGenerator_Macros.text_regionBegin.Replace(GUIGenerator_Macros.replacement_name, GUIGenerator_Macros.text_regionMacro_UnityCallbacks);		
+		//classContent += GUIGenerator_Macros.text_functionAnimationAwake.Replace(GUIGenerator_Macros.replacement_variable, className);	
+		//classContent += GUIGenerator_Macros.text_regionEnd;
 
-		classContent += GUIGenerator_Macros.text_classEnd;
+		//classContent += GUIGenerator_Macros.text_classEnd;
 
-		Debug.Log("WRITE: " + directory_GUIGeneratorScripts + className + GUIGenerator_Macros.file_end);
-		File.WriteAllText(directory_GUIGeneratorMain + className + GUIGenerator_Macros.file_end, classContent);
+		//Debug.Log("WRITE: " + directory_GUIGeneratorScripts + className + GUIGenerator_Macros.file_end);
+		File.Copy(Application.dataPath + "/MPAssets/GUIGenerator/Data/GUI_Animation.cs_backup", directory_GUIGeneratorMain + "GUI_Animation.cs", true);
+		//File.WriteAllText(directory_GUIGeneratorMain + className + GUIGenerator_Macros.file_end, classContent);
 	}
 
 	#endregion
@@ -724,11 +735,6 @@ public class GUIGenerator : MonoBehaviour {
 			}
 		}
 
-		//ANIMATION FILE
-		string animationFile = directory_GUIGeneratorMain+ GUIGenerator_Macros.text_classPrefix + GUIGenerator_Macros.file_animation + GUIGenerator_Macros.file_end;
-		if(File.Exists(animationFile)){
-			files.Add(GUIGenerator_Macros.file_animation + GUIGenerator_Macros.file_end);
-		}
 		//CONTROLLER FILE
 		string controllerFile = directory_GUIGeneratorMain + GUIGenerator_Macros.text_classPrefix + canvasName + GUIGenerator_Macros.file_controller + GUIGenerator_Macros.file_end;
 		if(File.Exists(controllerFile)){
@@ -738,6 +744,12 @@ public class GUIGenerator : MonoBehaviour {
 		return files;
 	}
 
+	public bool AnimationFileExists() {
+		//ANIMATION FILE
+		string animationFile = directory_GUIGeneratorMain + GUIGenerator_Macros.text_classPrefix + GUIGenerator_Macros.file_animation + GUIGenerator_Macros.file_end;
+		return File.Exists(animationFile);
+	}
+
 	public void GenerateFiles(){
 		CreatePaths();
 		CreateDirectories();
@@ -745,6 +757,13 @@ public class GUIGenerator : MonoBehaviour {
 		CreateAll();
 
 		GUIGenerator_Elem_Base.idAc = 0;
+	}
+
+	public void GenerateAnimationFile() {
+		CreatePaths();
+		CreateDirectories();
+
+		CreateAnimationFile();
 	}
 	#endregion
 }
