@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
-public class Log : MonoBehaviour {
+[Prefab("Log", true)]
+public class Log : Singleton<Log> {
 	#region VARIABLES
-	//SINGLETON
-	public static Log instance;
 
 	//LOG SETTINGS 	
 	public enum LOG_ORDER {
@@ -14,12 +13,14 @@ public class Log : MonoBehaviour {
 	LOG_ORDER _logOrder = LOG_ORDER.NEW_TO_OLD;
 
 
+	string str_log = "";
 	//UNITY CONSOLE
 	public bool useConsole = true;
 
 	//UNITY UI
 	public bool useUI;
 	public UnityEngine.UI.Text textLogUI;
+	bool updateUI = false;
 
 	//LOG FILE
 	public bool useFile;
@@ -37,18 +38,21 @@ public class Log : MonoBehaviour {
 	}
 
 	static void UpdateLog(string str) {
-#if LOG_FILE
-		instance.WriteInLog(str);
-#endif
-#if LOG_ANALYTICS
+		if (instance.useConsole) {
+			AddToDebug(str);
+		}
 
-#endif
-#if LOG_UNITY
-		AddToDebug(str);
-#endif
-#if LOG_UI
-		instance.WriteToUI(str);
-#endif
+		if (instance.useUI) {
+			instance.WriteToUI(str);
+		}
+
+		if (instance.useFile) {
+			instance.WriteToFile(str);
+		}
+
+		if (instance.useGoogleAnalytics) {
+			//AddToDebug(str);
+		}
 	}
 	#endregion
 
@@ -58,11 +62,31 @@ public class Log : MonoBehaviour {
 		Debug.Log(str);
 	}
 
-	public static void AddToLog(string _str) {
-		string str = TimeStamp() + " " + _str;
-		str += "\n";
+	//public static void AddToLog(string _str) {
+	//	string str = TimeStamp() + " " + _str;
+	//	str += "\n";
 
-		UpdateLog(str);
+	//	UpdateLog(str);
+	//}
+
+	public static void AddToLog(params string[] _str) {
+		if (_str.Length == 1) {
+			string str = TimeStamp() + " " + _str[0];
+			str += "\n";
+
+			UpdateLog(str);
+		}
+		else {
+			string str = TimeStamp() + "\n";
+
+			for (int i = 0; i < _str.Length; ++i) {
+				str += "\t" + _str[i];
+			}
+
+			str += "\n";
+
+			UpdateLog(str);
+		}
 	}
 
 	public static void AddToLog(string _class, string _function, string _message, string _exception = null, string[] args = null) {
@@ -85,18 +109,6 @@ public class Log : MonoBehaviour {
 
 		UpdateLog(str);
 	}
-
-	public static void AddToLog(string[] _str) {
-		string str = TimeStamp() + "\n";
-
-		for (int i = 0; i < _str.Length; ++i) {
-			str += "\t" + _str[i];
-		}
-
-		str += "\n";
-
-		UpdateLog(str);
-	}
 	#endregion
 
 	#region CONSOLE
@@ -107,10 +119,16 @@ public class Log : MonoBehaviour {
 
 	#region UI
 	void WriteToUI(string str) {
-		if (_logOrder == LOG_ORDER.NEW_TO_OLD)
-			textLogUI.text = str + "\n" + textLogUI.text;
-		else
-			textLogUI.text += "\n" + str;
+		if (_logOrder == LOG_ORDER.NEW_TO_OLD) {
+			//textLogUI.text = str + "\n" + textLogUI.text;
+			str_log += str + "\n" + str_log;
+		}
+		else {
+			//textLogUI.text += "\n" + str;
+			str_log += "\n" + str;
+		}
+
+		updateUI = true;
 	}
 	#endregion
 
@@ -123,14 +141,23 @@ public class Log : MonoBehaviour {
 	#region GOOGLE_ANALYTICS
 
 	#endregion
-	
+
 	#region UNITY_CALLBACKS
-	void Awake() {
-		instance = this;
-	}
+	//void Awake() {
+	//	instance = this;
+	//}
 
 	void Start() {
 		_logOrder = logOrder;
+		str_log = "";
+		if (textLogUI != null)
+			textLogUI.text = "";
+	}
+
+	private void FixedUpdate() {
+		if (updateUI) {
+			textLogUI.text = str_log;
+		}
 	}
 	#endregion
 }

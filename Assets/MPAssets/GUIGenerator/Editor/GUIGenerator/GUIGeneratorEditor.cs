@@ -12,12 +12,22 @@ public class GUIGeneratorEditor : Editor
 	static int selected = 0;
 	static List<string> options = new List<string>();
 
+	public GameObject myCanvas;
+	public GameObject myCamera;
+	static int selectedFocus = 0;
+	static List<string> optionsFocus = new List<string>();
 	static GUIGeneratorEditor() {
 		EditorApplication.hierarchyWindowChanged += HierarchyChanged;
 
 		//instance = this;
 	}
 
+	private static void GetFocusHierarchy() {
+		optionsFocus.Clear();
+		for (int i = 0; i < instance.myCanvas.transform.childCount; ++i) {
+			optionsFocus.Add(instance.myCanvas.transform.GetChild(i).gameObject.name);
+		}
+	}
 	void Start() {
 		instance = this;
 	}
@@ -25,6 +35,8 @@ public class GUIGeneratorEditor : Editor
 	void OnEnable() {
 	//	//Debug.Log("OnEnable");
 		instance = this;
+		myCanvas = GameObject.Find("Canvas");
+		myCamera = GameObject.Find("Main Camera");
 	//	EditorApplication.hierarchyWindowChanged += HierarchyChanged;
 	}
 
@@ -125,6 +137,23 @@ public class GUIGeneratorEditor : Editor
 			}
 		}
 
+		//GUILayout.Space(20);
+
+		//GUILayout.BeginHorizontal();
+
+		//selectedFocus = EditorGUILayout.Popup("Focus Screen", selectedFocus, optionsFocus.ToArray());
+
+		//if (GUILayout.Button("Update Focus Hierarchy", EditorStyles.miniButtonRight)) {
+		//	GetFocusHierarchy();
+		//}
+		//GUILayout.EndHorizontal();
+
+		//if (GUILayout.Button("Focus Camera")) {
+		//	string oldValue = optionsFocus[selectedFocus];
+
+		//	myCanvas.transform.position = myCanvas.transform.FindChild(oldValue).localPosition;
+		//	// 
+		//}
 
 	}
 

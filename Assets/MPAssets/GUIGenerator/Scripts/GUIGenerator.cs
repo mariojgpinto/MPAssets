@@ -751,12 +751,12 @@ public class GUIGenerator : MonoBehaviour {
 	}
 
 	public void GenerateFiles(){
+		GUIGenerator_Elem_Base.idAc = 0;
+
 		CreatePaths();
 		CreateDirectories();
 		
 		CreateAll();
-
-		GUIGenerator_Elem_Base.idAc = 0;
 	}
 
 	public void GenerateAnimationFile() {

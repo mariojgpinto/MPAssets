@@ -10,6 +10,7 @@ public class GUIGenerator_Elem_Base {
 	public enum TYPE{
 		PANEL,
 		IMAGE,
+		RAWIMAGE,
 		TEXT,
 		BUTTON,
 		TOGGLE,
@@ -45,6 +46,7 @@ public class GUIGenerator_Elem_Base {
 		this.obj = mainObj;
 		this.nameOrig = this.obj.name;
 		
+		//PANEL
 		if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_panel)){
 			this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_panel.Length);
 
@@ -52,6 +54,7 @@ public class GUIGenerator_Elem_Base {
 			this.classType = GUIGenerator_Macros.type_image;
 			this.classTypeFormated = GUIGenerator_Macros.typeFormated_image;
 		} else
+		//IMAGE
 		if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_image)){
 			this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_image.Length);
 
@@ -59,13 +62,24 @@ public class GUIGenerator_Elem_Base {
 			this.classType = GUIGenerator_Macros.type_image;
 			this.classTypeFormated = GUIGenerator_Macros.typeFormated_image;
 		} else
-		if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_text)){
+		//RAW IMAGE
+		if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_rawImage)) {
+			this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_rawImage.Length);
+
+			this.type = GUIGenerator_Elem_Base.TYPE.RAWIMAGE;
+			this.classType = GUIGenerator_Macros.type_rawImage;
+			this.classTypeFormated = GUIGenerator_Macros.typeFormated_rawImage;
+		}
+		else
+		//TEXT
+		if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_text)){
 			this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_text.Length);
 
 			this.type = GUIGenerator_Elem_Base.TYPE.TEXT;
 			this.classType = GUIGenerator_Macros.type_text;
 			this.classTypeFormated = GUIGenerator_Macros.typeFormated_text;
 		} else
+		//BUTTON
 		if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_button)){
 			this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_button.Length);
 
@@ -73,6 +87,7 @@ public class GUIGenerator_Elem_Base {
 			this.classType = GUIGenerator_Macros.type_button;
 			this.classTypeFormated = GUIGenerator_Macros.typeFormated_button;
 		} else
+		//TOGGLE
 		if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_toggle)){
 			this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_toggle.Length);
 			
@@ -80,6 +95,7 @@ public class GUIGenerator_Elem_Base {
 			this.classType = GUIGenerator_Macros.type_toggle;
 			this.classTypeFormated = GUIGenerator_Macros.typeFormated_toggle;
 		} else
+		//INPUT
 		if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_input)){
 			this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_input.Length);
 			
@@ -87,6 +103,7 @@ public class GUIGenerator_Elem_Base {
 			this.classType = GUIGenerator_Macros.type_input;
 			this.classTypeFormated = GUIGenerator_Macros.typeFormated_input;
 		} else{
+		//OTHER / UNDEFINED
 		//if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_other)){
 			this.name = this.nameOrig;
 
@@ -138,6 +155,9 @@ public class GUIGenerator_Elem_Base {
 				break;
 			case TYPE.IMAGE:
 				this.variableName += GUIGenerator_Macros.sub_image;
+				break;
+			case TYPE.RAWIMAGE:
+				this.variableName += GUIGenerator_Macros.sub_rawImage;
 				break;
 			case TYPE.TEXT:
 				this.variableName += GUIGenerator_Macros.sub_text;

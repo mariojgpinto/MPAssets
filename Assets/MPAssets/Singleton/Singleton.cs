@@ -25,10 +25,14 @@
 using System;
 using UnityEngine;
 
+
+
+
+
 public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
 	private static T _instance;
 
-	public static T Instance {
+	public static T instance {
 		get {
 			if (!Instantiated) CreateInstance();
 			return _instance;
@@ -74,7 +78,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
 		Destroyed = false;
 	}
 
-	public bool Persistent;
+	public bool Persistent = true;
 	public static bool Instantiated { get; private set; }
 	public static bool Destroyed { get; private set; }
 

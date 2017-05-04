@@ -13,6 +13,7 @@ public static class GUIGenerator_Macros{
 	#region ELEMENTS
 	public static string elem_panel  = "Panel_";
 	public static string elem_image  = "Image_";
+	public static string elem_rawImage = "RawImage_";
 	public static string elem_text 	 = "Text_";
 	public static string elem_button = "Button_";
 	public static string elem_toggle = "Toggle_";
@@ -23,6 +24,7 @@ public static class GUIGenerator_Macros{
 	public static string sub_gameObject  = "_gameObject";
 	public static string sub_panel  = "_Panel";
 	public static string sub_image  = "_Image";
+	public static string sub_rawImage  = "_RawImage";
 	public static string sub_text 	= "_Text";
 	public static string sub_button = "_Button";
 	public static string sub_toggle = "_Toggle";
@@ -33,6 +35,7 @@ public static class GUIGenerator_Macros{
 	public static string type_gameObject  = "GameObject";
 	public static string type_panel  = "UnityEngine.UI.Image";
 	public static string type_image  = "UnityEngine.UI.Image";
+	public static string type_rawImage = "UnityEngine.UI.RawImage";
 	public static string type_text 	= "UnityEngine.UI.Text";
 	public static string type_button = "UnityEngine.UI.Button";
 	public static string type_toggle = "UnityEngine.UI.Toggle";
@@ -43,6 +46,7 @@ public static class GUIGenerator_Macros{
 	public static string typeFormated_gameObject  = "GameObject\t\t\t\t";
 	public static string typeFormated_panel  = "UnityEngine.UI.Image\t\t";
 	public static string typeFormated_image  = "UnityEngine.UI.Image\t\t";
+	public static string typeFormated_rawImage = "UnityEngine.UI.RawImage\t\t";
 	public static string typeFormated_text 	 = "UnityEngine.UI.Text\t\t";
 	public static string typeFormated_button = "UnityEngine.UI.Button\t\t";
 	public static string typeFormated_toggle = "UnityEngine.UI.Toggle\t\t";
