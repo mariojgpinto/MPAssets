@@ -3,10 +3,9 @@ using System;
 using System.IO;
 using System.Collections;
 
-public class GUI_Controller : MonoBehaviour {
+[Prefab("GUI_Controller", true)]
+public class GUI_Controller : Singleton<GUI_Controller> {
 	#region VARIABLES
-	public static GUI_Controller instance;
-
 	public GameObject gui_Full;
 	public GameObject gui_Left;
 	public GameObject gui_Right;
@@ -17,9 +16,22 @@ public class GUI_Controller : MonoBehaviour {
 
 	#region SETUP
 	void FindGameObjects(){
-		gui_Full = GameObject.Find("Panel_Full");
-		gui_Left = GameObject.Find("Panel_Left");
-		gui_Right = GameObject.Find("Panel_Right");
+		for(int i = 0 ; i < this.transform.childCount ; ++i){
+			GameObject go = this.transform.GetChild(i).gameObject;
+
+			switch(go.name){
+				case "Panel_Full":
+					gui_Full = go;
+					break;
+				case "Panel_Left":
+					gui_Left = go;
+					break;
+				case "Panel_Right":
+					gui_Right = go;
+					break;
+				default: break;
+			}
+		}
 	}
 
 	void InitializeClasses(){
@@ -84,16 +96,8 @@ public class GUI_Controller : MonoBehaviour {
 	#endregion
 
 	#region UNITY_CALLBACKS
-	void Awake(){
-		if(instance == null){
-			instance = this;
-		}
-		else{
-			if (instance != this) {
-				Destroy(gameObject);
-				return;
-			}
-		}
+	protected override void Awake(){
+		base.Awake();
 
 		FindGameObjects();
 

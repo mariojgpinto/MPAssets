@@ -10,11 +10,12 @@ public class GUIGeneratorEditor : Editor
 	static GUIGenerator myScript;
 
 	static int selected = 0;
+	static bool isPersistent = true;
 	static List<string> options = new List<string>();
 
 	public GameObject myCanvas;
 	public GameObject myCamera;
-	static int selectedFocus = 0;
+	//static int selectedFocus = 0;
 	static List<string> optionsFocus = new List<string>();
 	static GUIGeneratorEditor() {
 		EditorApplication.hierarchyWindowChanged += HierarchyChanged;
@@ -83,6 +84,8 @@ public class GUIGeneratorEditor : Editor
 		}
 		GUILayout.EndHorizontal();
 
+		isPersistent = EditorGUILayout.Toggle("Persitent UI", isPersistent);
+
 		EditorGUILayout.LabelField("(Change only if MPAssets folder path is changed.)");
 		myScript.directory_DataPath = EditorGUILayout.TextField("Data Path", myScript.directory_DataPath);
 
@@ -104,7 +107,7 @@ public class GUIGeneratorEditor : Editor
 
 					myScript.activeScreen = selected;
 
-					GenerateFiles();
+					GenerateFiles(isPersistent);
 				}
 				else{
 					Debug.Log("NO");
@@ -157,8 +160,8 @@ public class GUIGeneratorEditor : Editor
 
 	}
 
-	void GenerateFiles(){
-		myScript.GenerateFiles();
+	void GenerateFiles(bool isPersitent = true){
+		myScript.GenerateFiles(isPersitent);
 		
 		EditorUtility.DisplayDialog("Generation Successful", "Files Generated!", "Ok");
 	}

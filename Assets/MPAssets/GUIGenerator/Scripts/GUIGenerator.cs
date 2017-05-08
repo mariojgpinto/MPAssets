@@ -77,7 +77,7 @@ public class GUIGenerator : MonoBehaviour {
 	#endregion
 
 	#region FILES
-	void CreateAll(){
+	void CreateAll(bool isPersistent) {
 		List<GUIGenerator_Elem_Base> list = new List<GUIGenerator_Elem_Base>();
 		
 		GetAllComponents(this.gameObject, ref list, null);
@@ -91,7 +91,7 @@ public class GUIGenerator : MonoBehaviour {
 		}
 
 		//Create the Controller File
-		CreateControllerFile(list);
+		CreateControllerFile(list, isPersistent);
 		
 		//Create the Animation File
 		//CreateAnimationFile();
@@ -255,7 +255,7 @@ public class GUIGenerator : MonoBehaviour {
 	#endregion
 
 	#region FILE_CONTROLLER
-	void CreateControllerFile(List<GUIGenerator_Elem_Base> list){
+	void CreateControllerFile(List<GUIGenerator_Elem_Base> list, bool isPersistent){
 		string className = GUIGenerator_Macros.text_classPrefix + canvasName + GUIGenerator_Macros.file_controller;
 		string classContent = "";
 
@@ -264,12 +264,21 @@ public class GUIGenerator : MonoBehaviour {
 		//classContent += GUIGenerator_Macros.text_classEventButton;
 		//classContent += GUIGenerator_Macros.text_classEventToggle;
 
-		classContent += GUIGenerator_Macros.text_classDeclaration.Replace(GUIGenerator_Macros.replacement_name, className);
+		//classContent += GUIGenerator_Macros.text_classRequireCanvas;
+		//if (isPersistent) {
 
+		//}
+		//else {
+		//	classContent += GUIGenerator_Macros.text_classDeclaration.Replace(GUIGenerator_Macros.replacement_name, className);
+		//}
+
+		classContent += GUIGenerator_Macros.text_classPersistent.Replace(GUIGenerator_Macros.replacement_variable, isPersistent.ToString().ToLower()).Replace(GUIGenerator_Macros.replacement_type, className);
+
+		classContent += GUIGenerator_Macros.text_classDeclaration_persistent.Replace(GUIGenerator_Macros.replacement_name, className);
 		classContent += GUIGenerator_Macros.text_regionBegin.Replace(GUIGenerator_Macros.replacement_name, GUIGenerator_Macros.text_regionMacro_Variables);
 
 		//VARIABLES
-		classContent += GUIGenerator_Macros.text_variableInstance.Replace(GUIGenerator_Macros.replacement_type, className);
+		//classContent += GUIGenerator_Macros.text_variableInstance.Replace(GUIGenerator_Macros.replacement_type, className);
 
 		for(int i = 0 ; i < list.Count; ++i){
 			classContent += GUIGenerator_Macros.text_gameObjectVariable.Replace(GUIGenerator_Macros.replacement_name,list[i].classInstanceName);
@@ -359,11 +368,17 @@ public class GUIGenerator : MonoBehaviour {
 
 	void CreateFunctionFindObjcts(List<GUIGenerator_Elem_Base> list, ref string classContent){
 		classContent += GUIGenerator_Macros.text_function_FindObjects_Header;
+		
 		for(int i = 0 ; i < list.Count; ++i){
 			classContent += GUIGenerator_Macros.text_function_FindObjects_Method_Find.
-				Replace(GUIGenerator_Macros.replacement_variable,list[i].classInstanceName).
-					Replace(GUIGenerator_Macros.replacement_name,list[i].nameOrig);
+				Replace(GUIGenerator_Macros.replacement_variable, list[i].classInstanceName).
+					Replace(GUIGenerator_Macros.replacement_name, list[i].nameOrig);
+			//classContent += GUIGenerator_Macros.text_function_FindObjects_Method_Find.
+			//	Replace(GUIGenerator_Macros.replacement_variable,list[i].classInstanceName).
+			//		Replace(GUIGenerator_Macros.replacement_name,list[i].nameOrig);
 		}
+
+		classContent += GUIGenerator_Macros.text_function_FindObjects_End;		
 		classContent += GUIGenerator_Macros.text_function_End;
 		classContent += "\n";
 	}
@@ -750,13 +765,13 @@ public class GUIGenerator : MonoBehaviour {
 		return File.Exists(animationFile);
 	}
 
-	public void GenerateFiles(){
+	public void GenerateFiles(bool isPersistent){
 		GUIGenerator_Elem_Base.idAc = 0;
 
 		CreatePaths();
 		CreateDirectories();
 		
-		CreateAll();
+		CreateAll(isPersistent);
 	}
 
 	public void GenerateAnimationFile() {

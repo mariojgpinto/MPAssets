@@ -39,18 +39,18 @@ public static class GUIGenerator_Macros{
 	public static string type_text 	= "UnityEngine.UI.Text";
 	public static string type_button = "UnityEngine.UI.Button";
 	public static string type_toggle = "UnityEngine.UI.Toggle";
-	public static string type_scroll = "GameObject";
+	public static string type_scroll = "UnityEngine.UI.ScrollRect";
 	public static string type_input = "UnityEngine.UI.InputField";
 	public static string type_other  = "GameObject";
 
 	public static string typeFormated_gameObject  = "GameObject\t\t\t\t";
 	public static string typeFormated_panel  = "UnityEngine.UI.Image\t\t";
 	public static string typeFormated_image  = "UnityEngine.UI.Image\t\t";
-	public static string typeFormated_rawImage = "UnityEngine.UI.RawImage\t\t";
+	public static string typeFormated_rawImage = "UnityEngine.UI.RawImage\t";
 	public static string typeFormated_text 	 = "UnityEngine.UI.Text\t\t";
 	public static string typeFormated_button = "UnityEngine.UI.Button\t\t";
 	public static string typeFormated_toggle = "UnityEngine.UI.Toggle\t\t";
-	public static string typeFormated_scroll = "GameObject\t\t\t\t";
+	public static string typeFormated_scroll = "UnityEngine.UI.ScrollRect\t";
 	public static string typeFormated_input  = "UnityEngine.UI.InputField\t";
 	public static string typeFormated_other  = "GameObject\t\t\t\t";
 
@@ -68,7 +68,9 @@ public static class GUIGenerator_Macros{
 			"using System.IO;\n" + 
 			"using System.Collections;\n\n";
 
+	public static string text_classPersistent = "[Prefab(\"" + replacement_type + "\", " + replacement_variable + ")]\n";
 	public static string text_classDeclaration = "public class " + replacement_name + " : MonoBehaviour {\n";
+	public static string text_classDeclaration_persistent = "public class " + replacement_name + " : Singleton<" + replacement_name + "> {\n";
 
 	public static string text_variableInstance = "\tpublic static " + replacement_type + " instance;\n\n";
 	public static string text_variableDeclaration = "\tpublic static " + replacement_type + replacement_name + ";\n";
@@ -91,6 +93,7 @@ public static class GUIGenerator_Macros{
 	public static string text_regionBegin = "\t#region " + replacement_name + "\n";
 	public static string text_regionEnd = "\t#endregion\n";
 
+	//public static string text_switch_End = "\t\t\tdefault: break;\n\t\t}\n";
 	public static string text_function_End = "\t}\n";
 	public static string text_comment_End = "//\t}\n";
 
@@ -128,8 +131,16 @@ public static class GUIGenerator_Macros{
 	public static string text_toggleEventHandlerVariableName = replacement_variable + "_TogglePressed";
 	public static string text_toggleEventHandlerVariable = "\tpublic static event EventHandler<" + replacement_type + "> " + text_toggleEventHandlerVariableName + ";\n";
 
-	public static string text_function_FindObjects_Header = "\tvoid FindGameObjects(){\n";
-	public static string text_function_FindObjects_Method_Find = "\t\t" + replacement_variable + " = GameObject.Find(\"" + replacement_name + "\");\n";
+	public static string text_function_FindObjects_Header = "\tvoid FindGameObjects(){\n" + 
+		"\t\tfor(int i = 0 ; i < this.transform.childCount ; ++i){\n" + 
+		"\t\t\tGameObject go = this.transform.GetChild(i).gameObject;\n\n"+
+		"\t\t\tswitch(go.name){\n";
+	//public static string text_function_FindObjects_Method_Find = "\t\t" + replacement_variable + " = GameObject.Find(\"" + replacement_name + "\");\n";
+	public static string text_function_FindObjects_Method_Find =
+		"\t\t\t\tcase \"" + replacement_name + "\":\n" +
+		"\t\t\t\t\t" + replacement_variable + " = go;\n" +
+		"\t\t\t\t\tbreak;\n";
+	public static string text_function_FindObjects_End = "\t\t\t\tdefault: break;\n\t\t\t}\n\t\t}\n";
 
 	public static string text_function_InitializeValues_Header = "\tvoid InitializeClasses(){\n";
 	public static string text_function_InitializeValues_Method_Comment = "\t// " + replacement_variable + " ---------------------------------------------\n";
@@ -221,16 +232,18 @@ public static class GUIGenerator_Macros{
 
 
 	public static string text_function_ControllerStart_Full = 
-			"\tvoid Awake(){\n" +
-			"\t\tif(instance == null){\n" + 
-			"\t\t\tinstance = this;\n" + 
-			"\t\t}\n" + 
-			"\t\telse{\n" + 
-			"\t\t\tif (instance != this) {\n" + 
-			"\t\t\t\tDestroy(gameObject);\n"  + 
-			"\t\t\t\treturn;\n" + 
-			"\t\t\t}\n" + 
-			"\t\t}\n\n" + 
+			"\tprotected override void Awake(){\n" +
+			"\t\tbase.Awake();\n\n" +
+			//"\t\tPersistent = " + replacement_variable + ";\n\n" +
+			//"\t\tif(instance == null){\n" + 
+			//"\t\t\tinstance = this;\n" + 
+			//"\t\t}\n" + 
+			//"\t\telse{\n" + 
+			//"\t\t\tif (instance != this) {\n" + 
+			//"\t\t\t\tDestroy(gameObject);\n"  + 
+			//"\t\t\t\treturn;\n" + 
+			//"\t\t\t}\n" + 
+			//"\t\t}\n\n" + 
 			"\t\tFindGameObjects();\n\n" + 
 			"\t\tInitializeClasses();\n" + 
 			"\t\tInitializeListeners();\n" + 

@@ -38,4 +38,9 @@ public class PrefabAttribute : Attribute {
 		Name = name;
 		Persistent = false;
 	}
+
+	public PrefabAttribute(bool persistent) {
+		Name = "";
+		Persistent = persistent;
+	}
 }

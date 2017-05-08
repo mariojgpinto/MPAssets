@@ -36,7 +36,11 @@ public class GUI_Full : MonoBehaviour {
 
 	// MYIMAGE ---------------------------------------------
 	public static GameObject				myImage_RawImage_gameObject;
-	public static UnityEngine.UI.RawImage		myImage_RawImage;
+	public static UnityEngine.UI.RawImage	myImage_RawImage;
+
+	// MYSCROLL ---------------------------------------------
+	public static GameObject				myScroll_Scroll_gameObject;
+	public static UnityEngine.UI.ScrollRect	myScroll_Scroll;
 
 
 
@@ -67,5 +71,8 @@ public class GUI_Full : MonoBehaviour {
 
 		myImage_RawImage_gameObject = full_Panel_gameObject.transform.Find("RawImage_MyImage").gameObject;
 		myImage_RawImage = myImage_RawImage_gameObject.GetComponent<UnityEngine.UI.RawImage>();
+
+		myScroll_Scroll_gameObject = full_Panel_gameObject.transform.Find("Scroll_MyScroll").gameObject;
+		myScroll_Scroll = myScroll_Scroll_gameObject.GetComponent<UnityEngine.UI.ScrollRect>();
 	}
 }

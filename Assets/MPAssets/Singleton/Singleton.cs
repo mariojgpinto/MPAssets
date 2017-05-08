@@ -25,22 +25,18 @@
 using System;
 using UnityEngine;
 
-
-
-
-
 public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
 	private static T _instance;
 
 	public static T instance {
 		get {
-			if (!Instantiated) CreateInstance();
+			if (!instantiated) CreateInstance();
 			return _instance;
 		}
 	}
 
 	private static void CreateInstance() {
-		if (Destroyed) return;
+		if (destroyed) return;
 		var type = typeof (T);
 		var objects = FindObjectsOfType<T>();
 		if (objects.Length > 0) {
@@ -51,8 +47,8 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
 			}
 			_instance = objects[0];
 			_instance.gameObject.SetActive(true);
-			Instantiated = true;
-			Destroyed = false;
+			instantiated = true;
+			destroyed = false;
 			return;
 		}
 
@@ -64,7 +60,11 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
 			prefabName = type.ToString();
 			gameObject = new GameObject();
 		} else {
-			prefabName = attribute.Name;
+			if(attribute.Name == "")
+				prefabName = type.ToString();
+			else
+				prefabName = attribute.Name;
+
 			gameObject = Instantiate(Resources.Load<GameObject>(prefabName));
 			if (gameObject == null)
 				throw new Exception("Could not find Prefab \"" + prefabName + "\" on Resources for Singleton of type \"" + type +
@@ -74,29 +74,35 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
 		gameObject.name = prefabName;
 		if (_instance == null)
 			_instance = gameObject.GetComponent<T>() ?? gameObject.AddComponent<T>();
-		Instantiated = true;
-		Destroyed = false;
+		instantiated = true;
+		destroyed = false;
 	}
 
-	public bool Persistent = true;
-	public static bool Instantiated { get; private set; }
-	public static bool Destroyed { get; private set; }
+	public static bool isPersistent = true;
+	public static bool instantiated { get; private set; }
+	public static bool destroyed { get; private set; }
 
 	protected virtual void Awake() {
+		var attribute = Attribute.GetCustomAttribute(typeof(T), typeof(PrefabAttribute)) as PrefabAttribute;
+
+		if(attribute != null) {
+			isPersistent = attribute.Persistent;
+		}
+
 		if (_instance == null) {
-			if (Persistent) {
+			if (isPersistent) {
 				CreateInstance();
 				DontDestroyOnLoad(gameObject);
 			}
 			return;
 		}
-		if (Persistent) DontDestroyOnLoad(gameObject);
+		if (isPersistent) DontDestroyOnLoad(gameObject);
 		if (GetInstanceID() != _instance.GetInstanceID()) Destroy(gameObject);
 	}
 
 	private void OnDestroy() {
-		Destroyed = true;
-		Instantiated = false;
+		destroyed = true;
+		instantiated = false;
 	}
 
 	public void Touch() { }

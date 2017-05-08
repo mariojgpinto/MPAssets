@@ -121,7 +121,7 @@ public class Log : Singleton<Log> {
 	void WriteToUI(string str) {
 		if (_logOrder == LOG_ORDER.NEW_TO_OLD) {
 			//textLogUI.text = str + "\n" + textLogUI.text;
-			str_log += str + "\n" + str_log;
+			str_log = str + "\n" + str_log;
 		}
 		else {
 			//textLogUI.text += "\n" + str;
@@ -143,9 +143,11 @@ public class Log : Singleton<Log> {
 	#endregion
 
 	#region UNITY_CALLBACKS
-	//void Awake() {
-	//	instance = this;
-	//}
+	protected override void Awake() {
+		base.Awake();
+
+		Debug.Log(Log.instance.log_file);
+	}
 
 	void Start() {
 		_logOrder = logOrder;

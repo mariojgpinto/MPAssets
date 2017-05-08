@@ -15,6 +15,7 @@ public class GUIGenerator_Elem_Base {
 		BUTTON,
 		TOGGLE,
 		INPUT_FIELD,
+		SCROLL,
 		OTHER
 	};
 	public TYPE type = TYPE.OTHER;
@@ -102,9 +103,18 @@ public class GUIGenerator_Elem_Base {
 			this.type = GUIGenerator_Elem_Base.TYPE.INPUT_FIELD;
 			this.classType = GUIGenerator_Macros.type_input;
 			this.classTypeFormated = GUIGenerator_Macros.typeFormated_input;
-		} else{
-		//OTHER / UNDEFINED
-		//if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_other)){
+		} else
+		//SCROLL
+		if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_scroll)) {
+			this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_scroll.Length);
+
+			this.type = GUIGenerator_Elem_Base.TYPE.SCROLL;
+			this.classType = GUIGenerator_Macros.type_scroll;
+			this.classTypeFormated = GUIGenerator_Macros.typeFormated_scroll;
+		}
+		else {
+			//OTHER / UNDEFINED
+			//if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_other)){
 			this.name = this.nameOrig;
 
 			this.type = GUIGenerator_Elem_Base.TYPE.OTHER;
@@ -170,6 +180,9 @@ public class GUIGenerator_Elem_Base {
 				break;
 			case TYPE.INPUT_FIELD:
 				this.variableName += GUIGenerator_Macros.sub_input;
+				break;
+			case TYPE.SCROLL:
+				this.variableName += GUIGenerator_Macros.sub_scroll;
 				break;
 			case TYPE.OTHER:
 			default:
