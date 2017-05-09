@@ -3,6 +3,8 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
+using MPAssets;
+
 [CustomEditor(typeof(GUIGenerator))]
 public class GUIGeneratorEditor : Editor
 {

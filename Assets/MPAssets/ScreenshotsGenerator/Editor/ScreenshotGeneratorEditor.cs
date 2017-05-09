@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
+using MPAssets;
+
 [CustomEditor(typeof(ScreenshotGenerator))]
 public class ScreenshotGeneratorEditor : Editor
 {

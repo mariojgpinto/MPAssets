@@ -6,6 +6,7 @@ using UnityEditor;
 using System.IO;
 using System;
 
+using MPAssets;
 
 public class Test : MonoBehaviour {
 	#region VARIABLES

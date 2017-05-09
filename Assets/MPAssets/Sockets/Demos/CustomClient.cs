@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using MPAssets;
+
 public class CustomClient : MonoBehaviour {
 	#region VARIABLES
 	public UnityEngine.UI.Text textUI;

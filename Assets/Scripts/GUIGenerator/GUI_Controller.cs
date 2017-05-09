@@ -3,6 +3,8 @@ using System;
 using System.IO;
 using System.Collections;
 
+using MPAssets;
+
 [Prefab("GUI_Controller", true)]
 public class GUI_Controller : Singleton<GUI_Controller> {
 	#region VARIABLES

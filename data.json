@@ -1,0 +1,12 @@
+{
+	"MYINT": 0,
+	"MYFLOAT": 1.0,
+	"MYSTRING": "Default Value",
+	"MYLISTOFSTRINGS": [
+		"str1",
+		"str2"
+	],
+	"EMPTYLIST": [
+		
+	]
+}

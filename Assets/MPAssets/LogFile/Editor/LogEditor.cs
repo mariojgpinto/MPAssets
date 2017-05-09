@@ -2,6 +2,8 @@
 using UnityEngine;
 using System.Collections;
 
+using MPAssets;
+
 [CustomEditor(typeof(Log))]
 public class LogEditor : Editor {
 	private Log _log = null;

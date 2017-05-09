@@ -2,14 +2,15 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+using MPAssets;
+
 public class COMTest_Server : MonoBehaviour {
 	SocketServer server = null;
 
 	public Texture2D imageToSend;
 
 	Texture2D imageReceived = null;
-
-
+	
 
 	#region BUTTON_CALLBACKS
 	public void OnButtonPressed(int id){

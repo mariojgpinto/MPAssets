@@ -25,85 +25,93 @@
 using System;
 using UnityEngine;
 
-public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
-	private static T _instance;
+namespace MPAssets {
+	public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
+		private static T _instance;
 
-	public static T instance {
-		get {
-			if (!instantiated) CreateInstance();
-			return _instance;
-		}
-	}
-
-	private static void CreateInstance() {
-		if (destroyed) return;
-		var type = typeof (T);
-		var objects = FindObjectsOfType<T>();
-		if (objects.Length > 0) {
-			if (objects.Length > 1) {
-				Debug.LogWarning("There is more than one instance of Singleton of type \"" + type +
-					                "\". Keeping the first one. Destroying the others.");
-				for (var i = 1; i < objects.Length; i++) Destroy(objects[i].gameObject);
+		public static T instance {
+			get {
+				if (!instantiated)
+					CreateInstance();
+				return _instance;
 			}
-			_instance = objects[0];
-			_instance.gameObject.SetActive(true);
+		}
+
+		private static void CreateInstance() {
+			if (destroyed)
+				return;
+			var type = typeof(T);
+			var objects = FindObjectsOfType<T>();
+			if (objects.Length > 0) {
+				if (objects.Length > 1) {
+					Debug.LogWarning("There is more than one instance of Singleton of type \"" + type +
+										"\". Keeping the first one. Destroying the others.");
+					for (var i = 1; i < objects.Length; i++)
+						Destroy(objects[i].gameObject);
+				}
+				_instance = objects[0];
+				_instance.gameObject.SetActive(true);
+				instantiated = true;
+				destroyed = false;
+				return;
+			}
+
+			string prefabName;
+			GameObject gameObject;
+			var attribute = Attribute.GetCustomAttribute(type, typeof(PrefabAttribute)) as PrefabAttribute;
+
+			if (attribute == null || string.IsNullOrEmpty(attribute.Name)) {
+				prefabName = type.ToString();
+				gameObject = new GameObject();
+			}
+			else {
+				if (attribute.Name == "")
+					prefabName = type.ToString();
+				else
+					prefabName = attribute.Name;
+
+				gameObject = Instantiate(Resources.Load<GameObject>(prefabName));
+				if (gameObject == null)
+					throw new Exception("Could not find Prefab \"" + prefabName + "\" on Resources for Singleton of type \"" + type +
+										"\".");
+			}
+
+			gameObject.name = prefabName;
+			if (_instance == null)
+				_instance = gameObject.GetComponent<T>() ?? gameObject.AddComponent<T>();
 			instantiated = true;
 			destroyed = false;
-			return;
 		}
 
-		string prefabName;
-		GameObject gameObject;
-		var attribute = Attribute.GetCustomAttribute(type, typeof (PrefabAttribute)) as PrefabAttribute;
+		public static bool isPersistent = true;
+		public static bool instantiated { get; private set; }
+		public static bool destroyed { get; private set; }
 
-		if (attribute == null || string.IsNullOrEmpty(attribute.Name)) {
-			prefabName = type.ToString();
-			gameObject = new GameObject();
-		} else {
-			if(attribute.Name == "")
-				prefabName = type.ToString();
-			else
-				prefabName = attribute.Name;
+		protected virtual void Awake() {
+			var attribute = Attribute.GetCustomAttribute(typeof(T), typeof(PrefabAttribute)) as PrefabAttribute;
 
-			gameObject = Instantiate(Resources.Load<GameObject>(prefabName));
-			if (gameObject == null)
-				throw new Exception("Could not find Prefab \"" + prefabName + "\" on Resources for Singleton of type \"" + type +
-					                "\".");
-		}
-
-		gameObject.name = prefabName;
-		if (_instance == null)
-			_instance = gameObject.GetComponent<T>() ?? gameObject.AddComponent<T>();
-		instantiated = true;
-		destroyed = false;
-	}
-
-	public static bool isPersistent = true;
-	public static bool instantiated { get; private set; }
-	public static bool destroyed { get; private set; }
-
-	protected virtual void Awake() {
-		var attribute = Attribute.GetCustomAttribute(typeof(T), typeof(PrefabAttribute)) as PrefabAttribute;
-
-		if(attribute != null) {
-			isPersistent = attribute.Persistent;
-		}
-
-		if (_instance == null) {
-			if (isPersistent) {
-				CreateInstance();
-				DontDestroyOnLoad(gameObject);
+			if (attribute != null) {
+				isPersistent = attribute.Persistent;
 			}
-			return;
+
+			if (_instance == null) {
+				if (isPersistent) {
+					CreateInstance();
+					DontDestroyOnLoad(gameObject);
+				}
+				return;
+			}
+			if (isPersistent)
+				DontDestroyOnLoad(gameObject);
+			if (GetInstanceID() != _instance.GetInstanceID())
+				Destroy(gameObject);
 		}
-		if (isPersistent) DontDestroyOnLoad(gameObject);
-		if (GetInstanceID() != _instance.GetInstanceID()) Destroy(gameObject);
-	}
 
-	private void OnDestroy() {
-		destroyed = true;
-		instantiated = false;
-	}
+		private void OnDestroy() {
+			destroyed = true;
+			instantiated = false;
+		}
 
-	public void Touch() { }
+		public void Touch() { }
+	}
 }

@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 
+using MPAssets;
+
 public class COMTest_Client : MonoBehaviour {
 	SocketClient client;
 
