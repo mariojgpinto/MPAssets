@@ -66,7 +66,8 @@
 				"using UnityEngine;\n" +
 				"using System;\n" +
 				"using System.IO;\n" +
-				"using System.Collections;\n\n";
+				"using System.Collections;\n\n" + 
+				"using MPAssets;\n\n";
 
 		public static string text_classPersistent = "[Prefab(\"" + replacement_type + "\", " + replacement_variable + ")]\n";
 		public static string text_classDeclaration = "public class " + replacement_name + " : MonoBehaviour {\n";
