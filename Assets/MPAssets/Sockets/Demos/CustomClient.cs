@@ -49,16 +49,6 @@ public class CustomClient : MonoBehaviour {
 
 			ProcessMessage(text);
 			//Log.AddToLog("Message Received: " + text.GetText());
-
-			//string txt = text.GetText();
-			//Log.AddToLog(txt);
-			////textUI.text = txt;
-
-
-			//number = System.Convert.ToInt32(txt);
-
-			////client.SendInfo_text("" + (number + 1));
-			//StartCoroutine(SendMessageDelayed("" + (number + 1), waitTime));
 		}
 	}
 

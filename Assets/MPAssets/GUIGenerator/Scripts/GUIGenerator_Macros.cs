@@ -56,7 +56,7 @@
 
 		#endregion
 
-		#region FILES_GENERATION
+		#region FILES_GENERATION 
 		public static string text_classPrefix = "GUI_";
 
 		public static string file_init = "GUIGenerator_";

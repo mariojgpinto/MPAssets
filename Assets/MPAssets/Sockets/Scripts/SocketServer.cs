@@ -6,6 +6,7 @@ using System.Net.Sockets;
 
 namespace MPAssets {
 	public class SocketServer {
+		#region VARIABLES
 		TcpListener server = null;
 
 		Thread mainThread;
@@ -16,17 +17,20 @@ namespace MPAssets {
 
 		string ip = "192.168.1.7";
 		int port = 42222;
+		#endregion
 
-		public SocketServer(int _port = 42222) {
+		#region SETUP
+		public SocketServer(string _ip = "192.168.1.7", int _port = 42222) {
 			port = _port;
 		}
 
-		#region SETUP
-		public void StartServer(string _ip = "192.168.1.7") {
-			ip = _ip;
+		public void StartServer(string _ip = "192.168.1.7", int _port = 42222) {
+			ip = _ip == "localhost" ? "127.0.0.1" : _ip;
+			port = _port;
 
 			try {
-				server = new TcpListener(IPAddress.Parse(ip), port);
+				//server = new TcpListener(IPAddress.Parse(ip), port);
+				server = new TcpListener(Dns.GetHostEntry(ip).AddressList[0], port);
 
 				// Start listening for client requests.
 				server.Start();
