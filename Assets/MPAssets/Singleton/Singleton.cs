@@ -101,10 +101,10 @@ namespace MPAssets {
 				}
 				return;
 			}
-			if (isPersistent)
-				DontDestroyOnLoad(gameObject);
+			//if (isPersistent)
+			//	DontDestroyOnLoad(gameObject);
 			if (GetInstanceID() != _instance.GetInstanceID())
-				Destroy(gameObject);
+				DestroyImmediate(gameObject);
 		}
 
 		private void OnDestroy() {
