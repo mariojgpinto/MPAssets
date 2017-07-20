@@ -4,8 +4,31 @@ using System.IO;
 using System.Collections;
 
 public class GUI_Animation : MonoBehaviour {
+	#region ANIMANTIONS
+	public enum ANIMANTION{
+		SHOW_HIDE = 0,
+		SCALE = 1
+	}
+	#endregion
+	
 	#region VARIABLES
 	public static GUI_Animation instance;
+	#endregion
+
+	#region SWITCH_ANIMATION
+	public static void SwitchMenus(GameObject menuFrom, GameObject menuTo, ANIMANTION animation = ANIMANTION.SHOW_HIDE) {
+		switch (animation) {
+			case ANIMANTION.SCALE:
+				GUI_Animation.ScaleDown(menuFrom);
+				GUI_Animation.ScaleUp(menuTo);
+				break;
+			case ANIMANTION.SHOW_HIDE:
+			default:
+				GUI_Animation.HideMenu(menuFrom);
+				GUI_Animation.ShowMenu(menuTo);
+				break;
+		}
+	}
 	#endregion
 
 	#region SHOW_HIDE
@@ -19,6 +42,47 @@ public class GUI_Animation : MonoBehaviour {
 	{
 		panel.SetActive(false);
 		panel.GetComponent<RectTransform>().anchoredPosition = new Vector3(panel.GetComponent<RectTransform>().rect.width,0,0);
+	}
+	#endregion
+
+	#region SCALE
+	public static void ScaleDown(GameObject menu) {
+		instance.StartCoroutine(Scale_routine(menu, Vector3.one, Vector3.zero));
+	}
+
+	public static void ScaleUp(GameObject menu) {
+		instance.StartCoroutine(Scale_routine(menu, Vector3.zero, Vector3.one));
+	}
+
+	public static IEnumerator Scale_routine(GameObject panel, Vector3 scaleInit, Vector3 scaleEnd, float animationTime = .25f, float delayTime = 0f, bool removeElement = false) {
+		float progress = 0;
+
+		if (delayTime > 0)
+			yield return new WaitForSeconds(delayTime);
+
+		if (!removeElement) {
+			panel.SetActive(true);
+		}
+
+		RectTransform panelPos = panel.GetComponent<RectTransform>();
+
+		Vector3 deltaScale = scaleEnd - scaleInit;
+		Vector3 endScale = scaleEnd;
+
+		while (progress < 1) {
+			panelPos.localScale = scaleInit + deltaScale * progress;
+
+			progress += Time.deltaTime / animationTime;
+			yield return true;
+		}
+
+		panelPos.localScale = endScale;
+
+		if (removeElement) {
+			panel.SetActive(false);
+		}
+
+		yield break;
 	}
 	#endregion
 

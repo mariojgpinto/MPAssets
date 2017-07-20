@@ -3,6 +3,8 @@ using System;
 using System.IO;
 using System.Collections;
 
+using MPAssets;
+
 public class ButtonPressedEventArgs : EventArgs {
 	public string id { get; set; }
 	public string description { get; set; }

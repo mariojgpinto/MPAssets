@@ -331,6 +331,8 @@ public class GUIGenerator : MonoBehaviour {
 		//EVENT TOGGLE FUNCTION
 		classContent += GUIGenerator_Macros.text_function_OnTogglePressed.Replace(GUIGenerator_Macros.replacement_variable, className);
 
+		//REMOVE ALL EVENTS
+		RemoveAllEvents(list, className, ref classContent);
 
 		classContent += GUIGenerator_Macros.text_regionEnd;
 		classContent += "\n";
@@ -443,6 +445,27 @@ public class GUIGenerator : MonoBehaviour {
 				}
 				
 				classContent += "\n";
+			}
+		}
+
+		classContent += GUIGenerator_Macros.text_function_End;
+		classContent += "\n";
+	}
+
+	void RemoveAllEvents(List<GUIGenerator_Elem_Base> list, string controllerClassName, ref string classContent) {
+		classContent += GUIGenerator_Macros.text_function_RemoveAllEvents_Header;
+
+		for (int i = 0; i < list.Count; ++i) {
+			if (list[i].HasButtons()) {
+				classContent += GUIGenerator_Macros.text_function_RemoveAllEvents_Remove.
+					Replace(GUIGenerator_Macros.replacement_variable, controllerClassName).
+					Replace(GUIGenerator_Macros.replacement_variable2, GUIGenerator_Macros.text_buttonEventHandlerVariableName.Replace(GUIGenerator_Macros.replacement_variable, list[i].className));
+			}
+
+			if (list[i].HasToggle()) {
+				classContent += GUIGenerator_Macros.text_function_RemoveAllEvents_Remove.
+					Replace(GUIGenerator_Macros.replacement_variable, controllerClassName).
+					Replace(GUIGenerator_Macros.replacement_variable2, GUIGenerator_Macros.text_toggleEventHandlerVariableName.Replace(GUIGenerator_Macros.replacement_variable, list[i].className));
 			}
 		}
 
@@ -781,6 +804,12 @@ public class GUIGenerator : MonoBehaviour {
 		CreateDirectories();
 
 		CreateAnimationFile();
+	}
+	#endregion
+
+	#region UNITY_CALLBACKS
+	void Start() {
+		Destroy(this);
 	}
 	#endregion
 }
