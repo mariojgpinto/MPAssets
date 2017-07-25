@@ -176,7 +176,7 @@
 				"\t\t}\n" +
 				"\t}\n";
 
-		public static string text_function_RemoveAllEvents_Header = "\tvoid RemoveAllEvents(){\n";
+		public static string text_function_RemoveAllEvents_Header = "\tpublic static void RemoveAllEvents(){\n";
 		public static string text_function_RemoveAllEvents_Remove = "\t\t" + replacement_variable + "." + replacement_variable2 + " = null;\n";
 
 		public static string text_function_OnButtonCallback_Prefix = "Event_OnButton_" + replacement_name + "(" + replacement_variable + ")";
@@ -228,7 +228,7 @@
 			"\n\n//\t\t\t\tbreak;\n";
 		public static string text_comment_OnToggleCallback_SwitchEnd = "//\t\t\tdefault: break;\n//\t\t}\n";
 
-		public static string text_comment_AssignEvents_Header = "//\tvoid AssignEvents(){\n//\t\tRemoveAllEvents();\n\n";
+		public static string text_comment_AssignEvents_Header = "//\tvoid AssignEvents(){\n//\t\t" + replacement_variable + ".RemoveAllEvents();\n\n";
 		public static string text_comment_OnButtonCallback_Assign = "//\t\t" + replacement_variable + "." + replacement_variable2 + " += OnButton_" + replacement_name + ";\n";
 		public static string text_comment_OnToggleCallback_Assign = "//\t\t" + replacement_variable + "." + replacement_variable2 + " += OnToggle_" + replacement_name + ";\n";
 		public static string text_comment_AssignEvents_End = "//\t}\n";

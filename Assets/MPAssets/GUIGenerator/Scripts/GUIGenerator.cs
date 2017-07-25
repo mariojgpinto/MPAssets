@@ -361,7 +361,7 @@ public class GUIGenerator : MonoBehaviour {
 
 		//COMMENTS
 		classContent += GUIGenerator_Macros.text_regionBegin.Replace(GUIGenerator_Macros.replacement_name, GUIGenerator_Macros.text_regionMacro_Comments);
-		CreateCommentsCallBacks(list, ref classContent);
+		CreateCommentsCallBacks(list, className, ref classContent);
 		classContent += GUIGenerator_Macros.text_regionEnd;
 
 
@@ -550,8 +550,8 @@ public class GUIGenerator : MonoBehaviour {
 		}
 	}
 
-	void CreateCommentsCallBacks(List<GUIGenerator_Elem_Base> list, ref string classContent){
-		for(int i = 0 ; i < list.Count ; ++i){
+	void CreateCommentsCallBacks(List<GUIGenerator_Elem_Base> list, string controllerName, ref string classContent) {
+		for (int i = 0 ; i < list.Count ; ++i){
 		//BUTTONS
 			List<GUIGenerator_Elem_Base> listButtons = new List<GUIGenerator_Elem_Base>();			
 			AggregateButtons(list[i].children, ref listButtons);
@@ -604,9 +604,9 @@ public class GUIGenerator : MonoBehaviour {
 		}
 
 		//ASSIGN
-		classContent += GUIGenerator_Macros.text_comment_AssignEvents_Header;
+		classContent += GUIGenerator_Macros.text_comment_AssignEvents_Header.Replace(GUIGenerator_Macros.replacement_variable, controllerName);
 
-		for(int i = 0 ; i < list.Count ; ++i){		
+		for (int i = 0 ; i < list.Count ; ++i){		
 			List<GUIGenerator_Elem_Base> listButtons = new List<GUIGenerator_Elem_Base>();
 			AggregateButtons(list[i].children, ref listButtons);
 

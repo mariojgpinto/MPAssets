@@ -79,7 +79,7 @@ public class GUI_OtherMenuController : Singleton<GUI_OtherMenuController> {
 			handler(GUI_OtherMenuController.instance, args);
 		}
 	}
-	void RemoveAllEvents(){
+	public static void RemoveAllEvents(){
 		GUI_OtherMenuController.GUI_OtherMenuHomeMenu1_ButtonPressed = null;
 		GUI_OtherMenuController.GUI_OtherMenuHomeMenu2_ButtonPressed = null;
 		GUI_OtherMenuController.GUI_OtherMenuHomeMenu2_TogglePressed = null;
@@ -205,7 +205,7 @@ public class GUI_OtherMenuController : Singleton<GUI_OtherMenuController> {
 //	}
 
 //	void AssignEvents(){
-//		RemoveAllEvents();
+//		GUI_OtherMenuController.RemoveAllEvents();
 
 //		GUI_OtherMenuController.GUI_OtherMenuHomeMenu1_ButtonPressed += OnButton_HomeMenu1;
 //		GUI_OtherMenuController.GUI_OtherMenuHomeMenu2_ButtonPressed += OnButton_HomeMenu2;
