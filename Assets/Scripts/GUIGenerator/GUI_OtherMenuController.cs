@@ -133,7 +133,7 @@ public class GUI_OtherMenuController : Singleton<GUI_OtherMenuController> {
 	protected override void Awake(){
 		base.Awake();
 
-		if (destroyed)
+		if (!this)
 			return;
 
 		FindGameObjects();

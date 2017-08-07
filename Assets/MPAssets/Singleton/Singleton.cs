@@ -38,8 +38,8 @@ namespace MPAssets {
 		}
 
 		private static void CreateInstance() {
-			if (destroyed)
-				return;
+			//if (destroyed)
+			//return;
 			var type = typeof(T);
 			var objects = FindObjectsOfType<T>();
 			if (objects.Length > 0) {
@@ -95,8 +95,8 @@ namespace MPAssets {
 			}
 
 			if (_instance == null) {
+				CreateInstance();
 				if (isPersistent) {
-					CreateInstance();
 					DontDestroyOnLoad(gameObject);
 				}
 				return;
