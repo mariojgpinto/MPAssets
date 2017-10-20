@@ -6,6 +6,65 @@ using System.Net.Sockets;
 
 namespace MPAssets {
 	public class SocketServer {
+		#region  EVENTS
+		public event EventHandler<SocketArgs> OnConnect {
+			add {
+				SocketServerWorker.OnConnect += value;
+			}
+			remove {
+				SocketServerWorker.OnConnect -= value;
+			}
+		}
+		public event EventHandler<SocketArgs> OnConnectionLost {
+			add {
+				SocketServerWorker.OnConnectionLost += value;
+			}
+			remove {
+				SocketServerWorker.OnConnectionLost -= value;
+			}
+		}
+		public event EventHandler<SocketArgs> OnClose {
+			add {
+				SocketServerWorker.OnClose += value;
+			}
+			remove {
+				SocketServerWorker.OnClose -= value;
+			}
+		}
+		public event EventHandler<SocketArgs> OnReceive {
+			add {
+				SocketServerWorker.OnReceive += value;
+			}
+			remove {
+				SocketServerWorker.OnReceive -= value;
+			}
+		}
+		public event EventHandler<SocketArgs> OnReceiveFailed {
+			add {
+				SocketServerWorker.OnReceiveFailed += value;
+			}
+			remove {
+				SocketServerWorker.OnReceiveFailed -= value;
+			}
+		}
+		public event EventHandler<SocketArgs> OnSendSucess {
+			add {
+				SocketServerWorker.OnSendSucess += value;
+			}
+			remove {
+				SocketServerWorker.OnSendSucess -= value;
+			}
+		}
+		public event EventHandler<SocketArgs> OnSendFailed {
+			add {
+				SocketServerWorker.OnSendFailed += value;
+			}
+			remove {
+				SocketServerWorker.OnSendFailed -= value;
+			}
+		}
+		#endregion
+
 		#region VARIABLES
 		TcpListener server = null;
 
@@ -15,22 +74,34 @@ namespace MPAssets {
 		List<SocketServerWorker> clients = new List<SocketServerWorker>();
 		public Queue<KeyValuePair<int, COMData>> infoReceived = new Queue<KeyValuePair<int, COMData>>();
 
-		string ip = "192.168.1.7";
+		string ip = "localhost";
 		int port = 42222;
 		#endregion
 
 		#region SETUP
-		public SocketServer(string _ip = "192.168.1.7", int _port = 42222) {
+		public SocketServer(string _ip = "localhost", int _port = 42222) {
 			port = _port;
 		}
 
-		public void StartServer(string _ip = "192.168.1.7", int _port = 42222) {
-			ip = _ip == "localhost" ? "127.0.0.1" : _ip;
+		public void StartServer(string _ip = "localhost", int _port = 42222) {
+			//host = _host;// == "localhost" ? "127.0.0.1" : _host;
+			IPHostEntry ipHostInfo = Dns.GetHostEntry(_ip);
+			IPAddress ipAddress = ipHostInfo.AddressList[0];
+
+			foreach (IPAddress ip in ipHostInfo.AddressList) {
+				AddressFamily af = ip.AddressFamily;
+				if (af == AddressFamily.InterNetwork) {
+					ipAddress = ip;
+					break;
+				}
+			}
+			ip = ipAddress.ToString();
+			//Log.AddToDebug(ip);
+
 			port = _port;
 
 			try {
-				//server = new TcpListener(IPAddress.Parse(ip), port);
-				server = new TcpListener(Dns.GetHostEntry(ip).AddressList[0], port);
+				server = new TcpListener(ipAddress, port);
 
 				// Start listening for client requests.
 				server.Start();
@@ -52,8 +123,10 @@ namespace MPAssets {
 
 					TcpClient client = server.AcceptTcpClient();
 
+					//OnReceiveList.Add(null);
 					SocketServerWorker ssw = new SocketServerWorker(this, client, idCounter);
 					clients.Add(ssw);
+
 
 					Thread _thread = new Thread(() => ssw.RunWorker());
 					_thread.Start();
@@ -69,18 +142,6 @@ namespace MPAssets {
 				server.Stop();
 			}
 		}
-
-		//	void UpdateClientList(){
-		//		string str = clients.Count + " Clients Connected\n{";
-		//
-		//		for(int i = 0 ; i < clients.Count ; ++i){
-		//			str += clients[i].id + ((i < (clients.Count-1)) ? "," : "");
-		//		}
-		//
-		//		str += "}";
-		//
-		//		GameObject.Find("Text_Clients").GetComponent<Text>().text = str;
-		//	}
 		#endregion
 
 		#region MANAGE
@@ -111,6 +172,8 @@ namespace MPAssets {
 
 		public void RemoveClient(SocketServerWorker ssw) {
 			clients.Remove(ssw);
+			//int idx = clients.IndexOf(ssw);
+			//clients[idx] = null;
 		}
 		#endregion
 

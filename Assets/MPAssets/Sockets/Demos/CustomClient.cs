@@ -6,6 +6,7 @@ using MPAssets;
 
 public class CustomClient : MonoBehaviour {
 	#region VARIABLES
+	public string ip = "192.168.1.7";
 	public UnityEngine.UI.Text textUI;
 	float waitTime = 2f;
 	SocketClient client;
@@ -92,7 +93,7 @@ public class CustomClient : MonoBehaviour {
 	#region UNITY_CALLBACKS
 	void Start () {
 		Log.AddToLog("Init Client");
-		client = new SocketClient("192.168.1.7");//
+		client = new SocketClient(ip);//
 
 		//client.OnConnect += Client_OnConnect;
 		//client.OnConnectionLost += Client_OnConnectionLost;

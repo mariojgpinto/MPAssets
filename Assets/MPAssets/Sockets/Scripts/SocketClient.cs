@@ -70,7 +70,20 @@ namespace MPAssets {
 				evt(this, args);
 		}
 		public SocketClient(string _host = "localhost", int _port = 42222) {
-			host = _host;
+			//host = _host;// == "localhost" ? "127.0.0.1" : _host;
+			IPHostEntry ipHostInfo = Dns.GetHostEntry(_host);
+			IPAddress ipAddress = ipHostInfo.AddressList[0];
+
+			foreach (IPAddress ip in ipHostInfo.AddressList) {
+				AddressFamily af = ip.AddressFamily;
+				if (af == AddressFamily.InterNetwork) {
+					ipAddress = ip;
+					break;
+				}
+			}
+			host = ipAddress.ToString();
+			//Log.AddToDebug(host);
+
 			port = _port;
 		}
 
@@ -80,19 +93,25 @@ namespace MPAssets {
 			mainThread.Start();
 		}
 
+		bool isConnecting = false;
 		public void Connect() {
 			while (run) {
 				try {
 					if (isConnected) {
 						if (!IsConnected()) {
 							CloseConnection();
+							isConnecting = false;
 						}
 					}
 					else {
-						Log.AddToLog("Trying to Connect...");
+						if (!isConnecting) {
+							Log.AddToLog("Trying to Connect...");
+							isConnecting = true;
+						}
 						client = new TcpClient(host, port);
 						Log.AddToLog("Connected");
 						socket = client.Client;
+						isConnecting = false;
 
 						//isConnected = true;
 						CustomClient.first = true;

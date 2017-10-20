@@ -56,7 +56,7 @@ public class CustomServer : MonoBehaviour {
 	void Start () {
 		Log.AddToLog("Init Server");
 		server = new SocketServer();
-		server.StartServer("192.168.1.7");
+		server.StartServer("192.168.137.1");
 	}
 	
 	// Update is called once per frame

@@ -6,6 +6,16 @@ using System.Text;
 
 namespace MPAssets {
 	public class SocketServerWorker {
+		#region EVENTS
+		public static event EventHandler<SocketArgs> OnConnect;
+		public static event EventHandler<SocketArgs> OnConnectionLost;
+		public static event EventHandler<SocketArgs> OnClose;
+		public static event EventHandler<SocketArgs> OnReceive;
+		public static event EventHandler<SocketArgs> OnReceiveFailed;
+		public static event EventHandler<SocketArgs> OnSendSucess;
+		public static event EventHandler<SocketArgs> OnSendFailed;
+		#endregion
+
 		#region VARIABLES
 		SocketServer server;
 		TcpClient client;
@@ -46,6 +56,11 @@ namespace MPAssets {
 		#endregion
 
 		#region SETUP
+		public void RunEvent(EventHandler<SocketArgs> evt, SocketArgs args = null) {
+			if (evt != null)
+				evt(this, args);
+		}
+
 		public SocketServerWorker(SocketServer _server, TcpClient _client, int _id) {
 			server = _server;
 			id = _id;
@@ -54,6 +69,8 @@ namespace MPAssets {
 			socket = client.Client;
 
 			Log.AddToDebug(id + "|SocketServerWorker Created - " + ((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
+
+			RunEvent(OnConnect);
 		}
 
 		public void RunWorker() {
@@ -83,6 +100,7 @@ namespace MPAssets {
 		void ManageConnection_thread() {
 			while (isConnected) {
 				if (!IsConnected()) {
+					RunEvent(OnConnectionLost);
 					Close();
 				}
 
@@ -116,6 +134,8 @@ namespace MPAssets {
 
 			if (readThread != null)
 				readThread.Abort();
+
+			RunEvent(OnClose);
 		}
 
 		#endregion
@@ -143,8 +163,10 @@ namespace MPAssets {
 		}
 
 		bool Send(COMData data) {
-			if (!isConnected)
+			if (!isConnected) {
+				RunEvent(OnSendFailed);
 				return false;
+			}
 
 			try {
 				bool result = false;
@@ -164,6 +186,7 @@ namespace MPAssets {
 				}
 
 				if (!result) {
+					RunEvent(OnSendFailed);
 					return false;
 				}
 			}
@@ -178,6 +201,7 @@ namespace MPAssets {
 
 				return false;
 			}
+			RunEvent(OnSendSucess);
 			return true;
 		}
 
@@ -312,19 +336,19 @@ namespace MPAssets {
 						}
 						else {
 							if (fields.Length == 3) {//	
-													 //int stringSize = Convert.ToInt32(fields[1]);
+								//int stringSize = Convert.ToInt32(fields[1]);
 								COMData_text message = new COMData_text();
 								//message.data = new byte[stringSize];
 								message.data = System.Text.Encoding.UTF8.GetBytes(fields[2]);
 
 								server.infoReceived.Enqueue(new KeyValuePair<int, COMData>(id, message));
 
-								Log.AddToDebug("Message Received: " + message.data.Length);
+								//Log.AddToDebug("Message Received: " + message.data.Length);
 
-								//RunEvent(OnReceive);
+								RunEvent(OnReceive);
 							}
 							else {
-								//RunEvent(OnReceiveFailed, new SocketArgs("Bad Text"));
+								RunEvent(OnReceiveFailed, new SocketArgs("Bad Text"));
 								Log.AddToLog("Bad Text");
 							}
 						}
@@ -339,12 +363,12 @@ namespace MPAssets {
 								ReceiveImage(imageSize, imageWidth, imageHeight);
 							}
 							else {
-								Log.AddToDebug("Bad Text");
+								RunEvent(OnReceiveFailed, new SocketArgs("Bad Text"));
 							}
 						}
 						else {
 							if (fields[0] == COMData.TYPE.AUDIO.ToString()) {
-
+								RunEvent(OnReceiveFailed, new SocketArgs("AUDIO MESSAGE - NOT READY"));
 							}
 						}
 					}
@@ -358,12 +382,17 @@ namespace MPAssets {
 
 			int sizeReceived = socket.Receive(message.data);
 
-			Log.AddToDebug("Message Received: " + messageSize + " - " + sizeReceived);
+			//Log.AddToDebug("Message Received: " + messageSize + " - " + sizeReceived);
 
 			if (messageSize == sizeReceived) {
 				server.infoReceived.Enqueue(new KeyValuePair<int, COMData>(id, message));
 
 				Log.AddToDebug("Message Received: " + message.data.Length);
+
+				RunEvent(OnReceive);
+			}
+			else {
+				RunEvent(OnReceiveFailed, new SocketArgs("Text: " + messageSize + " != " + sizeReceived));
 			}
 		}
 
@@ -384,12 +413,17 @@ namespace MPAssets {
 				Log.AddToLog(id + "|" + bytesReceived + " bytes received so far (" + tmp + " this time) - (" + (imageSize - bytesReceived) + " left)");
 			}
 
-			Log.AddToDebug(id + "|" + bytesReceived + " bytes received");
+			//Log.AddToDebug(id + "|" + bytesReceived + " bytes received");
 
 			if (imageSize == bytesReceived) {
 				server.infoReceived.Enqueue(new KeyValuePair<int, COMData>(id, image));
 
 				Log.AddToDebug("Image Received: " + bytesReceived);
+
+				RunEvent(OnReceive);
+			}
+			else {
+				RunEvent(OnReceiveFailed, new SocketArgs("Image: " + imageSize + " != " + bytesReceived));
 			}
 		}
 
@@ -402,7 +436,7 @@ namespace MPAssets {
 			if (audioSize == sizeReceived) {
 				server.infoReceived.Enqueue(new KeyValuePair<int, COMData>(id, audio));
 
-				Log.AddToDebug("Image Received: " + audio.data.Length);
+				Log.AddToDebug("Audio Received: " + audio.data.Length);
 			}
 		}
 		#endregion

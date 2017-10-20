@@ -74,12 +74,12 @@ public class GUI_Animation : Singleton<GUI_Animation> {
 	#endregion
 
 	#region SCALE
-	public static void ScaleDown(GameObject menu) {
-		instance.StartCoroutine(Scale_routine(menu, Vector3.one, Vector3.zero, -1, 0, true));
+	public static void ScaleDown(GameObject menu, float _animationTime = -1, float delayTime = 0f) {
+		instance.StartCoroutine(Scale_routine(menu, Vector3.one, Vector3.zero, _animationTime, delayTime, true));
 	}
 
-	public static void ScaleUp(GameObject menu) {
-		instance.StartCoroutine(Scale_routine(menu, Vector3.zero, Vector3.one, -1, 0 ,false));
+	public static void ScaleUp(GameObject menu, float _animationTime = -1, float delayTime = 0f) {
+		instance.StartCoroutine(Scale_routine(menu, Vector3.zero, Vector3.one, _animationTime, delayTime, false));
 	}
 
 	public static IEnumerator Scale_routine(GameObject panel, Vector3 scaleInit, Vector3 scaleEnd, float _animationTime = -1, float delayTime = 0f, bool removeElement = false) {
@@ -115,12 +115,12 @@ public class GUI_Animation : Singleton<GUI_Animation> {
 	#endregion
 
 	#region FADE
-	public static void FadeIn(GameObject menu) {
-		instance.StartCoroutine(Fade_routine(menu, 0, 1, -1, 0, false));
+	public static void FadeIn(GameObject menu, float _animationTime = -1, float delayTime = 0f) {
+		instance.StartCoroutine(Fade_routine(menu, 0, 1, _animationTime, delayTime, false));
 	}
 
-	public static void FadeOut(GameObject menu) {
-		instance.StartCoroutine(Fade_routine(menu, 1, 0, -1, 0, true));
+	public static void FadeOut(GameObject menu, float _animationTime = -1, float delayTime = 0f) {
+		instance.StartCoroutine(Fade_routine(menu, 1, 0, _animationTime, delayTime, true));
 	}
 
 	public static IEnumerator Fade_routine(GameObject panel, float fadeFrom, float fadeTo, float _animationTime = -1, float delayTime = 0f, bool removeElement = false) {
