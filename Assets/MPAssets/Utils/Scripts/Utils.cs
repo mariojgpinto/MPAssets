@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
 
 namespace MPAssets {
@@ -31,6 +31,39 @@ namespace MPAssets {
 					return true;
 			}
 			return false;
+		}
+
+		public static System.Collections.Generic.List<T> Randomize<T>(System.Collections.Generic.List<T> list) {
+			System.Collections.Generic.List<T> randomizedList = new System.Collections.Generic.List<T>();
+			Random rnd = new Random();
+			while (list.Count > 0) {
+				int index = rnd.Next(0, list.Count); //pick a random item from the master list
+				randomizedList.Add(list[index]); //place it at the end of the randomized list
+				list.RemoveAt(index);
+			}
+			return randomizedList;
+		}
+
+		public static System.Collections.Generic.List<int> GenerateRandomList(int min, int max, int count) {
+			Random random = new Random(DateTime.Now.Millisecond);
+			System.Collections.Generic.List<int> result = new System.Collections.Generic.List<int>();
+
+			while (result.Count < count) {
+				int num = random.Next(min, max);
+
+				bool exists = false;
+				for (int i = 0; i < result.Count; ++i) {
+					if (result[i] == num) {
+						exists = true;
+						break;
+					}
+				}
+
+				if (!exists)
+					result.Add(num);
+			}
+
+			return result;
 		}
 	}
 }
