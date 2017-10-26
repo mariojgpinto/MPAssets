@@ -18,19 +18,19 @@ public class GUI_Animation : Singleton<GUI_Animation> {
 	#endregion
 
 	#region SWITCH_ANIMATION
-	public static void SwitchMenus(List<GameObject> menuFrom, List<GameObject> menuTo, ANIMANTION animation = ANIMANTION.SHOW_HIDE) {
+	public static void SwitchMenus(List<GameObject> menuFrom, List<GameObject> menuTo, ANIMANTION animation = ANIMANTION.SHOW_HIDE, float _animationTime = -1, float _delayTime = 0f) {
 		switch (animation) {
 			case ANIMANTION.SCALE:
 				for(int i = 0; i < menuFrom.Count; ++i)
-					GUI_Animation.ScaleDown(menuFrom[i]);
+					GUI_Animation.ScaleDown(menuFrom[i], _animationTime, _delayTime);
 				for (int i = 0; i < menuTo.Count; ++i)
-					GUI_Animation.ScaleUp(menuTo[i]);
+					GUI_Animation.ScaleUp(menuTo[i], _animationTime, _delayTime);
 				break;
 			case ANIMANTION.FADE:
 				for (int i = 0; i < menuFrom.Count; ++i)
-					GUI_Animation.FadeOut(menuFrom[i]);
+					GUI_Animation.FadeOut(menuFrom[i], _animationTime, _delayTime);
 				for (int i = 0; i < menuTo.Count; ++i)
-					GUI_Animation.FadeIn(menuTo[i]);
+					GUI_Animation.FadeIn(menuTo[i], _animationTime, _delayTime);
 				break;
 			case ANIMANTION.SHOW_HIDE:
 			default:
@@ -42,15 +42,15 @@ public class GUI_Animation : Singleton<GUI_Animation> {
 		}
 	}
 	
-	public static void SwitchMenus(GameObject menuFrom, GameObject menuTo, ANIMANTION animation = ANIMANTION.SHOW_HIDE) {
+	public static void SwitchMenus(GameObject menuFrom, GameObject menuTo, ANIMANTION animation = ANIMANTION.SHOW_HIDE, float _animationTime = -1, float _delayTime = 0f) {
 		switch (animation) {
 			case ANIMANTION.SCALE:
-				GUI_Animation.ScaleDown(menuFrom);
-				GUI_Animation.ScaleUp(menuTo);
+				GUI_Animation.ScaleDown(menuFrom, _animationTime, _delayTime);
+				GUI_Animation.ScaleUp(menuTo, _animationTime, _delayTime);
 				break;
 			case ANIMANTION.FADE:
-				GUI_Animation.FadeOut(menuFrom);
-				GUI_Animation.FadeIn(menuTo);
+				GUI_Animation.FadeOut(menuFrom, _animationTime, _delayTime);
+				GUI_Animation.FadeIn(menuTo, _animationTime, _delayTime);
 				break;
 			case ANIMANTION.SHOW_HIDE:
 			default:
