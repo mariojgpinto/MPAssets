@@ -17,6 +17,8 @@ namespace MPAssets {
 			TOGGLE,
 			INPUT_FIELD,
 			SCROLL,
+			SLIDER,
+			DROPDOWN,
 			OTHER
 		};
 		public TYPE type = TYPE.OTHER;
@@ -119,6 +121,24 @@ namespace MPAssets {
 				this.classType = GUIGenerator_Macros.type_scroll;
 				this.classTypeFormated = GUIGenerator_Macros.typeFormated_scroll;
 			}
+			else
+			//SLIDER
+			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_slider)) {
+				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_slider.Length);
+
+				this.type = GUIGenerator_Elem_Base.TYPE.SLIDER;
+				this.classType = GUIGenerator_Macros.type_slider;
+				this.classTypeFormated = GUIGenerator_Macros.typeFormated_slider;
+			}
+			else
+			//DROPDOWN
+			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_dropdown)) {
+				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_dropdown.Length);
+
+				this.type = GUIGenerator_Elem_Base.TYPE.DROPDOWN;
+				this.classType = GUIGenerator_Macros.type_dropdown;
+				this.classTypeFormated = GUIGenerator_Macros.typeFormated_dropdown;
+			}
 			else {
 				//OTHER / UNDEFINED
 				//if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_other)){
@@ -190,6 +210,12 @@ namespace MPAssets {
 					break;
 				case TYPE.SCROLL:
 					this.variableName += GUIGenerator_Macros.sub_scroll;
+					break;
+				case TYPE.SLIDER:
+					this.variableName += GUIGenerator_Macros.sub_slider;
+					break;
+				case TYPE.DROPDOWN:
+					this.variableName += GUIGenerator_Macros.sub_dropdown;
 					break;
 				case TYPE.OTHER:
 				default:

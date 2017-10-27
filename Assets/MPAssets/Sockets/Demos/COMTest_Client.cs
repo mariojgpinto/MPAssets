@@ -104,7 +104,7 @@ public class COMTest_Client : MonoBehaviour {
 			if(data.type == COMData.TYPE.TEXT){
 				COMData_text text = (COMData_text)data;
 
-				Log.AddToLog("Message Received: " + text.GetText());
+				Log.Debug("Message Received: " + text.GetText());
 
 				if (sendImages)
 				{
@@ -122,7 +122,7 @@ public class COMTest_Client : MonoBehaviour {
 				texture.LoadImage(image.data);
 				texture.Apply();
 
-				Log.AddToLog("Image Received: " + texture.width + " x " + texture.height);
+				Log.Debug("Image Received: " + texture.width + " x " + texture.height);
 
 				GameObject.Find("RawImage").GetComponent<RawImage>().texture = texture;
 			}

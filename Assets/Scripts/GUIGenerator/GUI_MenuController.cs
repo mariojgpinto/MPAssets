@@ -76,6 +76,11 @@ public class GUI_MenuController : Singleton<GUI_MenuController> {
 			handler(GUI_MenuController.instance, args);
 		}
 	}
+	public static void RemoveAllEvents(){
+		GUI_MenuController.GUI_MenuHomeMenu1_ButtonPressed = null;
+		GUI_MenuController.GUI_MenuHomeMenu2_ButtonPressed = null;
+	}
+
 	#endregion
 
 	#region CALLBACKS
@@ -115,7 +120,7 @@ public class GUI_MenuController : Singleton<GUI_MenuController> {
 	protected override void Awake(){
 		base.Awake();
 
-		if (destroyed)
+		if (!this)
 			return;
 
 		FindGameObjects();
@@ -171,6 +176,8 @@ public class GUI_MenuController : Singleton<GUI_MenuController> {
 //	}
 
 //	void AssignEvents(){
+//		GUI_MenuController.RemoveAllEvents();
+
 //		GUI_MenuController.GUI_MenuHomeMenu1_ButtonPressed += OnButton_HomeMenu1;
 //		GUI_MenuController.GUI_MenuHomeMenu2_ButtonPressed += OnButton_HomeMenu2;
 

@@ -74,7 +74,7 @@ namespace MPAssets {
 		List<SocketServerWorker> clients = new List<SocketServerWorker>();
 		public Queue<KeyValuePair<int, COMData>> infoReceived = new Queue<KeyValuePair<int, COMData>>();
 
-		string ip = "localhost";
+		//string ip = "localhost";
 		int port = 42222;
 		#endregion
 
@@ -95,8 +95,8 @@ namespace MPAssets {
 					break;
 				}
 			}
-			ip = ipAddress.ToString();
-			//Log.AddToDebug(ip);
+			//string ip = ipAddress.ToString();
+			//Log.Debug(ip);
 
 			port = _port;
 
@@ -111,7 +111,7 @@ namespace MPAssets {
 
 			}
 			catch (Exception e) {
-				Log.AddToLog("StartServer: " + e);
+				Log.Debug("StartServer: " + e);
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace MPAssets {
 			try {
 				// Enter the listening loop.
 				while (true) {
-					Log.AddToLog("Waiting for a connection... ");
+					Log.Debug("Waiting for a connection... ");
 
 					TcpClient client = server.AcceptTcpClient();
 
@@ -131,11 +131,11 @@ namespace MPAssets {
 					Thread _thread = new Thread(() => ssw.RunWorker());
 					_thread.Start();
 
-					Log.AddToLog(idCounter++ + "|Client Connected!");
+					Log.Debug(idCounter++ + "|Client Connected!");
 				}
 			}
 			catch (SocketException e) {
-				Log.AddToLog("SocketException: " + e);
+				Log.Debug("SocketException: " + e);
 			}
 			finally {
 				// Stop listening for new clients.

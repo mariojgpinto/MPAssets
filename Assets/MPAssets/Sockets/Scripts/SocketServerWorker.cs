@@ -68,13 +68,13 @@ namespace MPAssets {
 
 			socket = client.Client;
 
-			Log.AddToDebug(id + "|SocketServerWorker Created - " + ((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
+			Log.Debug(id + "|SocketServerWorker Created - " + ((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
 
 			RunEvent(OnConnect);
 		}
 
 		public void RunWorker() {
-			Log.AddToDebug(id + "|SocketServerWorker RunWorker");
+			Log.Debug(id + "|SocketServerWorker RunWorker");
 
 			isConnected = true;
 
@@ -115,14 +115,14 @@ namespace MPAssets {
 					socket.Close();
 				}
 				catch (Exception e) {
-					Log.AddToLog("SocketServerWorker", "Close()", "Error closing socket", e.ToString());
+					Log.Debug("SocketServerWorker", "Close()", "Error closing socket", e.ToString());
 				}
 			}
 
 			if (removeFromServer)
 				server.RemoveClient(this);
 
-			Log.AddToLog(id + "| Client Closed");
+			Log.Debug(id + "| Client Closed");
 
 			isConnected = false;
 
@@ -142,21 +142,21 @@ namespace MPAssets {
 
 		#region SEND
 		public void SendInfo_text(string text) {
-			Log.AddToDebug(id + "|SocketServerWorker SendMessageRequest: " + text);
+			Log.Debug(id + "|SocketServerWorker SendMessageRequest: " + text);
 			infoToSend.Enqueue(new COMData_text(text));
 
 			writeWaitInLine.Set();
 		}
 
 		public void SendInfo_image(byte[] data, int width, int height) {
-			Log.AddToDebug(id + "|SocketServerWorker SendImageRequest: " + data.Length);
+			Log.Debug(id + "|SocketServerWorker SendImageRequest: " + data.Length);
 			infoToSend.Enqueue(new COMData_image(data, width, height));
 
 			writeWaitInLine.Set();
 		}
 
 		public void SendInfo_audio(byte[] data) {
-			Log.AddToDebug(id + "|SocketServerWorker SendAudioRequest: " + data.Length);
+			Log.Debug(id + "|SocketServerWorker SendAudioRequest: " + data.Length);
 			infoToSend.Enqueue(new COMData_audio(data));
 
 			writeWaitInLine.Set();
@@ -195,7 +195,7 @@ namespace MPAssets {
 					Close();
 				}
 				catch (Exception ex) {
-					Log.AddToDebug(ex.ToString());
+					Log.Debug(ex.ToString());
 					return false;
 				}
 
@@ -217,7 +217,7 @@ namespace MPAssets {
 					System.Text.Encoding.UTF8.GetString(text.data, 0, text.data.Length) +
 					COMData.macroEnd;
 
-				Log.AddToDebug(header + " - " + text.data);
+				Log.Debug(header + " - " + text.data);
 				socket.Send(System.Text.Encoding.UTF8.GetBytes(header));
 				return true;
 			}
@@ -228,7 +228,7 @@ namespace MPAssets {
 					text.data.Length +
 					COMData.macroEnd;
 
-				Log.AddToDebug(header + " - " + text.data);
+				Log.Debug(header + " - " + text.data);
 				socket.Send(System.Text.Encoding.UTF8.GetBytes(header));
 				int bytesSent = socket.Send(text.data);
 
@@ -242,7 +242,7 @@ namespace MPAssets {
 			//		text.data.Length + 
 			//		COMData.macroEnd;
 
-			//Log.AddToDebug(header + " - " + text.data);
+			//Log.Debug(header + " - " + text.data);
 			//socket.Send(System.Text.Encoding.UTF8.GetBytes (header));
 			//int bytesSent = socket.Send(text.data);
 
@@ -261,7 +261,7 @@ namespace MPAssets {
 					image.imageHeight +
 					COMData.macroEnd;
 
-			Log.AddToDebug(header);
+			Log.Debug(header);
 			socket.Send(System.Text.Encoding.UTF8.GetBytes(header));
 			int bytesSent = socket.Send(image.data);
 
@@ -276,7 +276,7 @@ namespace MPAssets {
 					audio.data.Length +
 					COMData.macroEnd;
 
-			Log.AddToDebug(header);
+			Log.Debug(header);
 			socket.Send(System.Text.Encoding.UTF8.GetBytes(header));
 			int bytesSent = socket.Send(audio.data);
 
@@ -304,7 +304,7 @@ namespace MPAssets {
 		#region RECEIVE
 		void Read_Threaded() {
 			while (isConnected) {
-				Log.AddToDebug("Waiting for info...");
+				Log.Debug("Waiting for info...");
 
 				int bytesRead = socket.Receive(mainBuffer);
 
@@ -343,13 +343,13 @@ namespace MPAssets {
 
 								server.infoReceived.Enqueue(new KeyValuePair<int, COMData>(id, message));
 
-								//Log.AddToDebug("Message Received: " + message.data.Length);
+								//Log.Debug("Message Received: " + message.data.Length);
 
 								RunEvent(OnReceive);
 							}
 							else {
 								RunEvent(OnReceiveFailed, new SocketArgs("Bad Text"));
-								Log.AddToLog("Bad Text");
+								Log.Debug("Bad Text");
 							}
 						}
 					}
@@ -382,12 +382,12 @@ namespace MPAssets {
 
 			int sizeReceived = socket.Receive(message.data);
 
-			//Log.AddToDebug("Message Received: " + messageSize + " - " + sizeReceived);
+			//Log.Debug("Message Received: " + messageSize + " - " + sizeReceived);
 
 			if (messageSize == sizeReceived) {
 				server.infoReceived.Enqueue(new KeyValuePair<int, COMData>(id, message));
 
-				Log.AddToDebug("Message Received: " + message.data.Length);
+				Log.Debug("Message Received: " + message.data.Length);
 
 				RunEvent(OnReceive);
 			}
@@ -397,7 +397,7 @@ namespace MPAssets {
 		}
 
 		void ReceiveImage(int imageSize, int imageWidth, int imageHeight) {
-			Log.AddToLog(id + "|Prepare to Resceive Image (size:" + imageSize + " width:" + imageWidth + " height:" + imageHeight + ")");
+			Log.Debug(id + "|Prepare to Resceive Image (size:" + imageSize + " width:" + imageWidth + " height:" + imageHeight + ")");
 			COMData_image image = new COMData_image();
 			image.imageWidth = imageWidth;
 			image.imageHeight = imageHeight;
@@ -410,15 +410,15 @@ namespace MPAssets {
 			while (bytesReceived != imageSize) {
 				int tmp = socket.Receive(imageBuffer, bytesReceived, imageSize - bytesReceived, SocketFlags.None);
 				bytesReceived += tmp;
-				Log.AddToLog(id + "|" + bytesReceived + " bytes received so far (" + tmp + " this time) - (" + (imageSize - bytesReceived) + " left)");
+				Log.Debug(id + "|" + bytesReceived + " bytes received so far (" + tmp + " this time) - (" + (imageSize - bytesReceived) + " left)");
 			}
 
-			//Log.AddToDebug(id + "|" + bytesReceived + " bytes received");
+			//Log.Debug(id + "|" + bytesReceived + " bytes received");
 
 			if (imageSize == bytesReceived) {
 				server.infoReceived.Enqueue(new KeyValuePair<int, COMData>(id, image));
 
-				Log.AddToDebug("Image Received: " + bytesReceived);
+				Log.Debug("Image Received: " + bytesReceived);
 
 				RunEvent(OnReceive);
 			}
@@ -436,7 +436,7 @@ namespace MPAssets {
 			if (audioSize == sizeReceived) {
 				server.infoReceived.Enqueue(new KeyValuePair<int, COMData>(id, audio));
 
-				Log.AddToDebug("Audio Received: " + audio.data.Length);
+				Log.Debug("Audio Received: " + audio.data.Length);
 			}
 		}
 		#endregion

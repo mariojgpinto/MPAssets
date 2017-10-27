@@ -18,6 +18,8 @@
 		public static string elem_button = "Button_";
 		public static string elem_toggle = "Toggle_";
 		public static string elem_scroll = "Scroll_";
+		public static string elem_slider = "Slider_";
+		public static string elem_dropdown = "Dropdown_";
 		public static string elem_input = "InputField_";
 		public static string elem_other = "Other_";
 
@@ -29,6 +31,8 @@
 		public static string sub_button = "_Button";
 		public static string sub_toggle = "_Toggle";
 		public static string sub_scroll = "_Scroll";
+		public static string sub_slider = "_Slider";
+		public static string sub_dropdown = "_Dropdown";
 		public static string sub_input = "_InputField";
 		public static string sub_other = "_Other";
 
@@ -40,6 +44,8 @@
 		public static string type_button = "UnityEngine.UI.Button";
 		public static string type_toggle = "UnityEngine.UI.Toggle";
 		public static string type_scroll = "UnityEngine.UI.ScrollRect";
+		public static string type_slider = "UnityEngine.UI.Slider";
+		public static string type_dropdown = "UnityEngine.UI.Dropdown";
 		public static string type_input = "UnityEngine.UI.InputField";
 		public static string type_other = "GameObject";
 
@@ -51,6 +57,8 @@
 		public static string typeFormated_button = "UnityEngine.UI.Button\t\t";
 		public static string typeFormated_toggle = "UnityEngine.UI.Toggle\t\t";
 		public static string typeFormated_scroll = "UnityEngine.UI.ScrollRect\t";
+		public static string typeFormated_slider = "UnityEngine.UI.Slider\t\t";
+		public static string typeFormated_dropdown = "UnityEngine.UI.Dropdown\t";
 		public static string typeFormated_input = "UnityEngine.UI.InputField\t";
 		public static string typeFormated_other = "GameObject\t\t\t\t";
 

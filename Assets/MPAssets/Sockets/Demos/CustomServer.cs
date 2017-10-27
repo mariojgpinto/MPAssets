@@ -37,7 +37,7 @@ public class CustomServer : MonoBehaviour {
 		//ANALYSE MESSAGE
 		textUI.text = txt;
 
-		Log.AddToLog(txt);
+		Log.Debug(txt);
 		int count = 0;
 		try {
 			count = System.Convert.ToInt32(txt);
@@ -54,7 +54,7 @@ public class CustomServer : MonoBehaviour {
 	#region UNITY_CALLBACKS
 	// Use this for initialization
 	void Start () {
-		Log.AddToLog("Init Server");
+		Log.Debug("Init Server");
 		server = new SocketServer();
 		server.StartServer("192.168.137.1");
 	}
