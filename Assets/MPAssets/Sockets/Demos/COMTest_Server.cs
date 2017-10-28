@@ -19,7 +19,7 @@ public class COMTest_Server : MonoBehaviour {
 			string txt = GameObject.Find("Input_SendText").GetComponent<InputField>().text;
 			
 			if(txt != ""){
-				Log.AddToLog("Send Message: " + txt);
+				Log.Debug("Send Message: " + txt);
 				server.BroadcastMessage(txt);
 			}
 			break;
@@ -60,7 +60,7 @@ public class COMTest_Server : MonoBehaviour {
 			if(data.Value.type == COMData.TYPE.TEXT){
 				COMData_text text = (COMData_text)data.Value;
 				
-				Log.AddToLog(data.Key + "|Message Received: " + text.GetText());
+				Log.Debug(data.Key + "|Message Received: " + text.GetText());
 			}
 			else
 			if(data.Value.type == COMData.TYPE.IMAGE){
@@ -76,7 +76,7 @@ public class COMTest_Server : MonoBehaviour {
 				}
 				imageReceived.LoadImage(image.data);
 
-				Log.AddToLog("Image Received: " + imageReceived.width + " x " + imageReceived.height);
+				Log.Debug("Image Received: " + imageReceived.width + " x " + imageReceived.height);
 				
 				GameObject.Find("RawImage").GetComponent<RawImage>().texture = imageReceived;
 

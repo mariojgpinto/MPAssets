@@ -82,13 +82,13 @@ namespace MPAssets {
 				}
 			}
 			host = ipAddress.ToString();
-			//Log.AddToDebug(host);
+			//Log.Debug(host);
 
 			port = _port;
 		}
 
 		public void TryToConnect() {
-			Log.AddToDebug("Trying to Connect");
+			Log.Debug("Trying to Connect");
 			mainThread = new Thread(Connect);
 			mainThread.Start();
 		}
@@ -105,11 +105,11 @@ namespace MPAssets {
 					}
 					else {
 						if (!isConnecting) {
-							Log.AddToLog("Trying to Connect...");
+							Log.Debug("Trying to Connect...");
 							isConnecting = true;
 						}
 						client = new TcpClient(host, port);
-						Log.AddToLog("Connected");
+						Log.Debug("Connected");
 						socket = client.Client;
 						isConnecting = false;
 
@@ -128,7 +128,7 @@ namespace MPAssets {
 					mainWaitInLine.WaitOne(2000);
 				}
 				catch (Exception e) {
-					Log.AddToDebug("setupSocket: " + e.ToString());
+					Log.Debug("setupSocket: " + e.ToString());
 					lastError = e.ToString();
 					//isConnected = false;
 				}
@@ -145,9 +145,9 @@ namespace MPAssets {
 				writeThread.Abort();
 
 			if (socket != null) {
-				Log.AddToDebug("socket.Shutdown");
+				Log.Debug("socket.Shutdown");
 				socket.Shutdown(SocketShutdown.Both);
-				Log.AddToDebug("socket.Close");
+				Log.Debug("socket.Close");
 				socket.Close();
 			}
 
@@ -157,7 +157,7 @@ namespace MPAssets {
 		}
 
 		void CloseConnection() {
-			Log.AddToLog("Close Connection");
+			Log.Debug("Close Connection");
 			//isConnected = false;
 
 			//if(mainThread != null)
@@ -175,7 +175,7 @@ namespace MPAssets {
 					socket.Close();
 				}
 				catch (Exception e) {
-					Log.AddToDebug(e.ToString());
+					Log.Debug(e.ToString());
 				}
 			}
 
@@ -183,7 +183,7 @@ namespace MPAssets {
 		}
 
 		public void Close() {
-			Log.AddToLog("Client Close");
+			Log.Debug("Client Close");
 			run = false;
 
 			CloseConnection();
@@ -201,21 +201,21 @@ namespace MPAssets {
 
 		#region SEND
 		public void SendInfo_text(string text) {
-			Log.AddToDebug("SendMessageRequest: " + text);
+			Log.Debug("SendMessageRequest: " + text);
 			infoToSend.Enqueue(new COMData_text(text));
 
 			writeWaitInLine.Set();
 		}
 
 		public void SendInfo_image(byte[] data, int width, int height) {
-			Log.AddToDebug("SendImageRequest: " + data.Length);
+			Log.Debug("SendImageRequest: " + data.Length);
 			infoToSend.Enqueue(new COMData_image(data, width, height));
 
 			writeWaitInLine.Set();
 		}
 
 		public void SendInfo_audio(byte[] data) {
-			Log.AddToDebug("SendAudioRequest: " + data.Length);
+			Log.Debug("SendAudioRequest: " + data.Length);
 			infoToSend.Enqueue(new COMData_audio(data));
 
 			writeWaitInLine.Set();
@@ -256,7 +256,7 @@ namespace MPAssets {
 					Close();
 				}
 				catch (Exception ex) {
-					Log.AddToDebug(ex.ToString());
+					Log.Debug(ex.ToString());
 					return false;
 				}
 
@@ -278,7 +278,7 @@ namespace MPAssets {
 					System.Text.Encoding.UTF8.GetString(text.data, 0, text.data.Length) +
 					COMData.macroEnd;
 
-				Log.AddToDebug(header + " - " + text.data);
+				Log.Debug(header + " - " + text.data);
 				socket.Send(System.Text.Encoding.UTF8.GetBytes(header));
 				return true;
 			}
@@ -289,7 +289,7 @@ namespace MPAssets {
 					text.data.Length +
 					COMData.macroEnd;
 
-				Log.AddToDebug(header + " - " + text.data);
+				Log.Debug(header + " - " + text.data);
 				socket.Send(System.Text.Encoding.UTF8.GetBytes(header));
 				int bytesSent = socket.Send(text.data);
 
@@ -309,7 +309,7 @@ namespace MPAssets {
 					image.imageHeight +
 					COMData.macroEnd;
 
-			Log.AddToDebug(header);
+			Log.Debug(header);
 			socket.Send(System.Text.Encoding.UTF8.GetBytes(header));
 			int bytesSent = socket.Send(image.data);
 
@@ -324,7 +324,7 @@ namespace MPAssets {
 					audio.data.Length +
 					COMData.macroEnd;
 
-			Log.AddToDebug(header);
+			Log.Debug(header);
 			socket.Send(System.Text.Encoding.UTF8.GetBytes(header));
 			int bytesSent = socket.Send(audio.data);
 
@@ -352,7 +352,7 @@ namespace MPAssets {
 		#region RECEIVE
 		void Read_Threaded() {
 			while (isConnected) {
-				Log.AddToDebug("Waiting for info...");
+				Log.Debug("Waiting for info...");
 
 				int bytesRead = socket.Receive(mainBuffer);
 
@@ -390,7 +390,7 @@ namespace MPAssets {
 
 								infoReceived.Enqueue(message);
 
-								Log.AddToDebug("Message Received: " + message.data.Length);
+								Log.Debug("Message Received: " + message.data.Length);
 
 								RunEvent(OnReceive);
 							}
@@ -431,7 +431,7 @@ namespace MPAssets {
 			if (messageSize == sizeReceived) {
 				infoReceived.Enqueue(message);
 
-				Log.AddToDebug("Message Received: " + message.data.Length);
+				Log.Debug("Message Received: " + message.data.Length);
 
 				RunEvent(OnReceive);
 			}
@@ -441,7 +441,7 @@ namespace MPAssets {
 		}
 
 		void ReceiveImage(int imageSize, int imageWidth, int imageHeight) {
-			Log.AddToLog("Prepare to Resceive Image (size:" + imageSize + " width:" + imageWidth + " height:" + imageHeight + ")");
+			Log.Debug("Prepare to Resceive Image (size:" + imageSize + " width:" + imageWidth + " height:" + imageHeight + ")");
 			COMData_image image = new COMData_image();
 			image.imageWidth = imageWidth;
 			image.imageHeight = imageHeight;
@@ -452,14 +452,14 @@ namespace MPAssets {
 			while (bytesReceived != imageSize) {
 				int tmp = socket.Receive(image.data, bytesReceived, imageSize - bytesReceived, SocketFlags.None);
 				bytesReceived += tmp;
-				Log.AddToLog(bytesReceived + " bytes received so far (" + tmp + " this time) - (" + (imageSize - bytesReceived) + " left)");
+				Log.Debug(bytesReceived + " bytes received so far (" + tmp + " this time) - (" + (imageSize - bytesReceived) + " left)");
 			}
 
-			Log.AddToDebug(bytesReceived + " bytes received");
+			Log.Debug(bytesReceived + " bytes received");
 			if (imageSize == bytesReceived) {
 				infoReceived.Enqueue(image);
 
-				Log.AddToDebug("Image Received: " + image.data.Length);
+				Log.Debug("Image Received: " + image.data.Length);
 
 				RunEvent(OnReceive);
 			}
@@ -477,7 +477,7 @@ namespace MPAssets {
 			if (audioSize == sizeReceived) {
 				infoReceived.Enqueue(audio);
 
-				Log.AddToDebug("Image Received: " + audio.data.Length);
+				Log.Debug("Image Received: " + audio.data.Length);
 			}
 		}
 

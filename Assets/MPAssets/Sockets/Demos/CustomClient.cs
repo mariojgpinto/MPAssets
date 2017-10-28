@@ -49,7 +49,7 @@ public class CustomClient : MonoBehaviour {
 			COMData_text text = (COMData_text)data;
 
 			ProcessMessage(text);
-			//Log.AddToLog("Message Received: " + text.GetText());
+			//Log.Debug("Message Received: " + text.GetText());
 		}
 	}
 
@@ -77,7 +77,7 @@ public class CustomClient : MonoBehaviour {
 		//ANALYSE MESSAGE
 		textUI.text = txt;
 
-		Log.AddToLog(txt);
+		Log.Debug(txt);
 		int count = 0;
 		try {
 			count = System.Convert.ToInt32(txt);
@@ -92,7 +92,7 @@ public class CustomClient : MonoBehaviour {
 
 	#region UNITY_CALLBACKS
 	void Start () {
-		Log.AddToLog("Init Client");
+		Log.Debug("Init Client");
 		client = new SocketClient(ip);//
 
 		//client.OnConnect += Client_OnConnect;

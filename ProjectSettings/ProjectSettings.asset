@@ -513,7 +513,8 @@ PlayerSettings:
     iOS: 1
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
-  apiCompatibilityLevelPerPlatform: {}
+  apiCompatibilityLevelPerPlatform:
+    Standalone: 2
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: MPAssets
