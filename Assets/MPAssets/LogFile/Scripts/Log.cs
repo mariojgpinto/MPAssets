@@ -90,9 +90,9 @@ namespace MPAssets {
 				str = TimeStamp() + " " + content[0];
 			}
 			else {
-				str = TimeStamp() + "\n";
+				str = TimeStamp();
 				for (int i = 0; i < content.Length; ++i) {
-					str += "\t" + content[i];
+					str += "\n\t" + content[i];
 				}
 			}
 			return str;
@@ -134,7 +134,11 @@ namespace MPAssets {
 		//ADD JUST TO CONSOLE LOG
 		[System.Diagnostics.Conditional("DEBUG")]
 		public static void Debug(params string[] content) {
-			UnityEngine.Debug.Log(TransformToString(content));
+			string str = "";
+			for (int i = 0; i < content.Length; ++i) {
+				str += content[i] + "\n";
+			}
+			UnityEngine.Debug.Log(str);
 		}
 		//ADD JUST TO CONSOLE LOG
 		static void _Debug(string content) {
@@ -203,7 +207,7 @@ namespace MPAssets {
 			UpdateLog(str);
 		}
 
-		[System.Obsolete("AddToLog is deprecated, please use Debug, Info, Warning, Error or Fatal instead.")]
+		//[System.Obsolete("AddToLog is deprecated, please use Debug, Info, Warning, Error or Fatal instead.")]
 		public static void AddToLog(string _class, string _function, string _message, string _exception = null, string[] args = null) {
 			string str = TimeStamp() + "\n";
 			str += "\t" + _class;

@@ -89,14 +89,12 @@ public class AlwaysOnTop : MonoBehaviour {
 	[return: MarshalAs(UnmanagedType.Bool)]
 	private static extern bool SetWindowPos(System.IntPtr hWnd, System.IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
 
+	[DllImport("user32.dll")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	private static extern bool ShowWindow(System.IntPtr hwnd, int nCmdShow);
 	#endregion
 
-
-	// Use this for initialization
-	void Start() {
-		AssignTopmostWindow(Application.productName, true);
-	}
-
+	#region ALWAYS_ON_TOP
 	public bool AssignTopmostWindow(string WindowTitle, bool MakeTopmost) {
 		UnityEngine.Debug.Log("Assigning top most flag to window of title: " + WindowTitle);
 
@@ -132,5 +130,20 @@ public class AlwaysOnTop : MonoBehaviour {
 		}
 		return true;
 	}
+	#endregion
+
+	#region MINIMIZE
+	public static void Minimize() {
+		System.IntPtr hWnd = FindWindow((string)null, Application.productName);
+		ShowWindow(hWnd, 2);
+	}
+	#endregion
+
+	#region UNITY_CALLBACKS
+	// Use this for initialization
+	void Start() {
+		AssignTopmostWindow(Application.productName, true);
+	}
+	#endregion
 }
 #endif
