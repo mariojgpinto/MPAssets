@@ -16,16 +16,16 @@ namespace MPAssets {
 		#region VARIABLES
 		//LOG PRIORITIES 	
 		public enum LOG_PRIORITY {
-			ALL		= 0,
-			TEST	= ALL + 1,
-			DEBUG	= TEST + 1,
-			INFO	= DEBUG + 1, 
-			WARNING	= INFO + 1,
-			ERROR	= WARNING + 1,
-			FATAL	= ERROR + 1,
-			NONE	
+			ALL = 0,
+			TEST = ALL + 1,
+			DEBUG = TEST + 1,
+			INFO = DEBUG + 1,
+			WARNING = INFO + 1,
+			ERROR = WARNING + 1,
+			FATAL = ERROR + 1,
+			NONE
 		};
-		
+
 		//TAGS
 		public string customTagsRaw;
 		public List<string> customTags = new List<string>();
@@ -65,7 +65,7 @@ namespace MPAssets {
 		string pending_file_directory;
 		int pending_file_timout = 10;
 		string log_file_directory;
-		
+
 
 		//GOOGLE ANALYTICS
 		public bool useGoogleAnalytics;
@@ -73,7 +73,7 @@ namespace MPAssets {
 
 		#region LOG_METHODS
 		static bool ContainsTag(string tag) {
-			foreach(string t in instance.customTags) {
+			foreach (string t in instance.customTags) {
 				if (tag.ToUpper() == t.ToUpper())
 					return true;
 			}
@@ -98,10 +98,14 @@ namespace MPAssets {
 			return str;
 		}
 
+		static string PrepareMessageForServer(string str) {
+			return str.Replace("\n\t", "&&&");
+		}
+
 		static void UpdateLog(string str, LOG_PRIORITY priority = LOG_PRIORITY.DEBUG) {
 			if (instance.useConsole) {
-				if((int)instance.logPriorityConsole <= (int)priority)
-				_Debug(str);
+				if ((int)instance.logPriorityConsole <= (int)priority)
+					_Debug(str);
 			}
 
 			if (instance.useUI) {
@@ -113,7 +117,7 @@ namespace MPAssets {
 			}
 
 			if (instance.useServer) {
-				instance.SendServerLog(str);
+				instance.SendServerLog(PrepareMessageForServer(str));
 			}
 
 			if (instance.useGoogleAnalytics) {
@@ -146,31 +150,19 @@ namespace MPAssets {
 		}
 
 		public static void Info(params string[] content) {
-			string str = TransformToString(content);
-
-			_Debug(str);
-			UpdateLog(str, LOG_PRIORITY.INFO);
+			UpdateLog(TransformToString(content), LOG_PRIORITY.INFO);
 		}
 
 		public static void Warning(params string[] content) {
-			string str = TransformToString(content);
-
-			_Debug(str);
-			UpdateLog(str, LOG_PRIORITY.WARNING);
+			UpdateLog(TransformToString(content), LOG_PRIORITY.WARNING);
 		}
 
 		public static void Error(params string[] content) {
-			string str = TransformToString(content);
-
-			_Debug(str);
-			UpdateLog(str, LOG_PRIORITY.ERROR);
+			UpdateLog(TransformToString(content), LOG_PRIORITY.ERROR);
 		}
 
 		public static void Fatal(params string[] content) {
-			string str = TransformToString(content);
-
-			_Debug(str);
-			UpdateLog(str, LOG_PRIORITY.FATAL);
+			UpdateLog(TransformToString(content), LOG_PRIORITY.FATAL);
 		}
 
 
@@ -260,7 +252,7 @@ namespace MPAssets {
 		#region SERVER
 		void SendServerLog(string str) {
 			string filePath = log_file_directory + GetUniqueLogID() + ".txt";
-			File.WriteAllText(filePath, str);
+			File.WriteAllText(filePath, str + "\n");
 		}
 
 		IEnumerator ServerRoutine() {
@@ -279,19 +271,19 @@ namespace MPAssets {
 					pendingFileFlag = false;
 				}
 
-				if(files.Length == 0) {
+				if (files.Length == 0) {
 					if (ac < 5) ac++;
 					yield return new WaitForSeconds(1 * ac);
 				}
 				else {
-					foreach(string file in files) {
+					foreach (string file in files) {
 						string str = File.ReadAllText(file);
 
 						bool requestErrorOccurred = false;
-						
+
 						var request = new UnityWebRequest(instance.request_url, "POST");
 						//request.timeout = 2;
-						string jsonString = "{\"logMessage\":\"" + str.Replace("\n", "\\n") + "\"}";
+						string jsonString = "{\"logMessage\":\"" + str.Replace("\n", "###") + "\"}";
 						byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(jsonString);
 						request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
 						request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
@@ -300,6 +292,7 @@ namespace MPAssets {
 						yield return request.Send();
 
 						if (request.isError) {
+							//_Debug("Error: " + request.responseCode);
 							requestErrorOccurred = true;
 						}
 						else {
@@ -307,12 +300,13 @@ namespace MPAssets {
 								File.Delete(file);
 							}
 							else {
+								//_Debug("Error: " + request.responseCode);
 								requestErrorOccurred = true;
 							}
 						}
 
 						if (requestErrorOccurred) {
-							//Debug.Log("Error at: " + file);
+							_Debug("Error (" + request.responseCode + ") at: " + file);
 							if (!pendingFileFlag) {
 								File.AppendAllText(pending_file_path, str);
 								File.Delete(file);
@@ -342,11 +336,11 @@ namespace MPAssets {
 
 			Log.instance.customTags = new List<string>(
 				customTagsRaw.Split(
-					new string[] { ";" }, 
+					new string[] { ";" },
 					System.StringSplitOptions.RemoveEmptyEntries));
 
 			string str = "Custom Tags [" + customTagsRaw + "]\n";
-			foreach(string t in Log.instance.customTags) {
+			foreach (string t in Log.instance.customTags) {
 				str += " - " + t + "\n";
 			}
 			UnityEngine.Debug.Log(str);
