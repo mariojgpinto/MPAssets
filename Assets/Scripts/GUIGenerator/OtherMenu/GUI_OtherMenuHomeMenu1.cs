@@ -7,8 +7,8 @@ using MPAssets;
 
 public class GUI_OtherMenuHomeMenu1 : MonoBehaviour {
 	// HOMEMENU1 ---------------------------------------------
-	public static GameObject				homeMenu1_Panel_gameObject;
-	public static UnityEngine.UI.Image		homeMenu1_Panel;
+	public static GameObject				panel_gameObject;
+	public static UnityEngine.UI.Image		panel;
 
 
 	// IMAGESLIDESHOW ---------------------------------------------
@@ -66,11 +66,11 @@ public class GUI_OtherMenuHomeMenu1 : MonoBehaviour {
 
 
 
-	public static void UpdateValues(GameObject panel){
-		homeMenu1_Panel_gameObject = panel.gameObject;
-		homeMenu1_Panel = homeMenu1_Panel_gameObject.GetComponent<UnityEngine.UI.Image>();
+	public static void UpdateValues(GameObject _panel){
+		panel_gameObject = _panel.gameObject;
+		panel = panel_gameObject.GetComponent<UnityEngine.UI.Image>();
 
-		imageSlideShow_Panel_gameObject = homeMenu1_Panel_gameObject.transform.Find("Panel_ImageSlideShow").gameObject;
+		imageSlideShow_Panel_gameObject = panel_gameObject.transform.Find("Panel_ImageSlideShow").gameObject;
 		imageSlideShow_Panel = imageSlideShow_Panel_gameObject.GetComponent<UnityEngine.UI.Image>();
 
 		imageSlideShow_photo_Image_gameObject = imageSlideShow_Panel_gameObject.transform.Find("Image_Photo").gameObject;
@@ -94,7 +94,7 @@ public class GUI_OtherMenuHomeMenu1 : MonoBehaviour {
 
 		imageSlideShow_buttons_back_text_Other_17_gameObject = imageSlideShow_buttons_back_Button_gameObject.transform.Find("Text").gameObject;
 
-		input_Panel_gameObject = homeMenu1_Panel_gameObject.transform.Find("Panel_Input").gameObject;
+		input_Panel_gameObject = panel_gameObject.transform.Find("Panel_Input").gameObject;
 		input_Panel = input_Panel_gameObject.GetComponent<UnityEngine.UI.Image>();
 
 		input_name_Text_gameObject = input_Panel_gameObject.transform.Find("Text_Name").gameObject;
@@ -117,7 +117,7 @@ public class GUI_OtherMenuHomeMenu1 : MonoBehaviour {
 
 		input_email_text_Other_21_gameObject = input_email_InputField_gameObject.transform.Find("Text").gameObject;
 
-		logo_Image_gameObject = homeMenu1_Panel_gameObject.transform.Find("Image_Logo").gameObject;
+		logo_Image_gameObject = panel_gameObject.transform.Find("Image_Logo").gameObject;
 		logo_Image = logo_Image_gameObject.GetComponent<UnityEngine.UI.Image>();
 	}
 }

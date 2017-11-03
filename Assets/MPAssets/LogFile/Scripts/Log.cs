@@ -57,7 +57,7 @@ namespace MPAssets {
 
 		//LOG HTTP SERVER
 		public bool useServer;
-		public LOG_PRIORITY logPriorityServer = LOG_PRIORITY.ERROR;
+		public LOG_PRIORITY logPriorityServer = LOG_PRIORITY.WARNING;
 
 		public string request_url;
 		public string pending_file = "server_pending_file.txt";

@@ -27,7 +27,7 @@ namespace MPAssets {
 
 		public int id = -1;
 
-		public string name = "";
+		public string nameMain = "";
 		public string nameLower = "";
 		public string nameOrig = "";
 		public string nameForChild = "";
@@ -52,7 +52,7 @@ namespace MPAssets {
 
 			//PANEL
 			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_panel)) {
-				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_panel.Length);
+				this.nameMain += this.nameOrig.Substring(GUIGenerator_Macros.elem_panel.Length);
 
 				this.type = GUIGenerator_Elem_Base.TYPE.PANEL;
 				this.classType = GUIGenerator_Macros.type_image;
@@ -61,7 +61,7 @@ namespace MPAssets {
 			else
 			//IMAGE
 			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_image)) {
-				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_image.Length);
+				this.nameMain += this.nameOrig.Substring(GUIGenerator_Macros.elem_image.Length);
 
 				this.type = GUIGenerator_Elem_Base.TYPE.IMAGE;
 				this.classType = GUIGenerator_Macros.type_image;
@@ -70,7 +70,7 @@ namespace MPAssets {
 			else
 			//RAW IMAGE
 			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_rawImage)) {
-				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_rawImage.Length);
+				this.nameMain += this.nameOrig.Substring(GUIGenerator_Macros.elem_rawImage.Length);
 
 				this.type = GUIGenerator_Elem_Base.TYPE.RAWIMAGE;
 				this.classType = GUIGenerator_Macros.type_rawImage;
@@ -79,7 +79,7 @@ namespace MPAssets {
 			else
 			//TEXT
 			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_text)) {
-				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_text.Length);
+				this.nameMain += this.nameOrig.Substring(GUIGenerator_Macros.elem_text.Length);
 
 				this.type = GUIGenerator_Elem_Base.TYPE.TEXT;
 				this.classType = GUIGenerator_Macros.type_text;
@@ -88,7 +88,7 @@ namespace MPAssets {
 			else
 			//BUTTON
 			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_button)) {
-				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_button.Length);
+				this.nameMain += this.nameOrig.Substring(GUIGenerator_Macros.elem_button.Length);
 
 				this.type = GUIGenerator_Elem_Base.TYPE.BUTTON;
 				this.classType = GUIGenerator_Macros.type_button;
@@ -97,7 +97,7 @@ namespace MPAssets {
 			else
 			//TOGGLE
 			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_toggle)) {
-				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_toggle.Length);
+				this.nameMain += this.nameOrig.Substring(GUIGenerator_Macros.elem_toggle.Length);
 
 				this.type = GUIGenerator_Elem_Base.TYPE.TOGGLE;
 				this.classType = GUIGenerator_Macros.type_toggle;
@@ -106,7 +106,7 @@ namespace MPAssets {
 			else
 			//INPUT
 			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_input)) {
-				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_input.Length);
+				this.nameMain += this.nameOrig.Substring(GUIGenerator_Macros.elem_input.Length);
 
 				this.type = GUIGenerator_Elem_Base.TYPE.INPUT_FIELD;
 				this.classType = GUIGenerator_Macros.type_input;
@@ -115,7 +115,7 @@ namespace MPAssets {
 			else
 			//SCROLL
 			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_scroll)) {
-				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_scroll.Length);
+				this.nameMain += this.nameOrig.Substring(GUIGenerator_Macros.elem_scroll.Length);
 
 				this.type = GUIGenerator_Elem_Base.TYPE.SCROLL;
 				this.classType = GUIGenerator_Macros.type_scroll;
@@ -124,7 +124,7 @@ namespace MPAssets {
 			else
 			//SLIDER
 			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_slider)) {
-				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_slider.Length);
+				this.nameMain += this.nameOrig.Substring(GUIGenerator_Macros.elem_slider.Length);
 
 				this.type = GUIGenerator_Elem_Base.TYPE.SLIDER;
 				this.classType = GUIGenerator_Macros.type_slider;
@@ -133,7 +133,7 @@ namespace MPAssets {
 			else
 			//DROPDOWN
 			if (this.nameOrig.StartsWith(GUIGenerator_Macros.elem_dropdown)) {
-				this.name += this.nameOrig.Substring(GUIGenerator_Macros.elem_dropdown.Length);
+				this.nameMain += this.nameOrig.Substring(GUIGenerator_Macros.elem_dropdown.Length);
 
 				this.type = GUIGenerator_Elem_Base.TYPE.DROPDOWN;
 				this.classType = GUIGenerator_Macros.type_dropdown;
@@ -142,7 +142,7 @@ namespace MPAssets {
 			else {
 				//OTHER / UNDEFINED
 				//if(this.nameOrig.StartsWith(GUIGenerator_Macros.elem_other)){
-				this.name = this.nameOrig;
+				this.nameMain = this.nameOrig;
 
 				this.type = GUIGenerator_Elem_Base.TYPE.OTHER;
 				this.classType = GUIGenerator_Macros.type_other;
@@ -153,18 +153,18 @@ namespace MPAssets {
 		}
 
 		public void UpdateVariableNames() {
-			this.nameLower = this.name.Substring(0, 1).ToLower();
-			this.nameLower += this.name.Substring(1, this.name.Length - 1);
+			this.nameLower = this.nameMain.Substring(0, 1).ToLower();
+			this.nameLower += this.nameMain.Substring(1, this.nameMain.Length - 1);
 
 			string parentName = "";//((parent != null) ? parent.nameForChild : "");
-			string name = "";
+			string _name = "";
 
 			if (parent != null) {
 				if (parent.parent != null) {
 					parentName = parent.nameForChild;
 				}
 				else { //GUI Parent -> Class
-					parentName = "";
+					parentName = " ";
 				}
 			}
 
@@ -174,17 +174,23 @@ namespace MPAssets {
 			//		else{
 			//			name = this.nameLower;
 			//		}
-			name = this.nameLower;
+			_name = this.nameLower;
 
 			this.variableName = ""; // (parentName == "") ? name : parentName + "_" + name;
 
 			if (parentName.Length == 0) {
-				this.variableName = name;
+				this.variableName = "";
+				this.nameForChild = _name;
 			}
 			else {
-				this.variableName = parentName + "_" + name;
+				if(parentName == " ") {
+					this.variableName = _name;
+				}
+				else {
+					this.variableName = parentName + "_" + _name;
+				}
+				this.nameForChild = this.variableName;
 			}
-			this.nameForChild = this.variableName;
 
 			switch (type) {
 				case TYPE.PANEL:
@@ -222,6 +228,11 @@ namespace MPAssets {
 					this.variableName += GUIGenerator_Macros.sub_other + "_" + ++namelessCounter;
 					break;
 			}
+			if (parent == null) {
+				string tmp = this.variableName.Substring(1, 2).ToLower();
+				tmp += this.variableName.Substring(3, this.variableName.Length - 3);
+				this.variableName = tmp;
+			}
 			this.variableName_obj = this.variableName + GUIGenerator_Macros.sub_gameObject;
 		}
 
@@ -240,7 +251,7 @@ namespace MPAssets {
 			for (int i = 0; i < level; ++i)
 				str += ("\t");
 
-			str += "Name: " + name + "\n";
+			str += "Name: " + nameMain + "\n";
 
 			for (int i = 0; i < level; ++i)
 				str += ("\t");

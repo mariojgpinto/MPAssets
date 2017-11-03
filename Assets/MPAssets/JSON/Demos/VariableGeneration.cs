@@ -84,10 +84,23 @@ public class VariableGeneration : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		string str = GenerateAllVariables(myVariables);
+		List<MyVariable> variables = new List<MyVariable>() {
+			new MyVariable("string", "text_final_1", "\"parabéns\""),
+			new MyVariable("string", "text_final_2", "\"conseguiste\""),
+			new MyVariable("string", "text_final_3", "\"pontos\""),
+			new MyVariable("string", "text_final_4", "\"vais ganhar\""),
+			new MyVariable("string", "text_final_5", "\"um molho de barbecue\""),
+			new MyVariable("Vector3", "leap_scale", "new Vector3(18,18,18)"),
+			new MyVariable("float", "time_goal", "5"),
+			new MyVariable("float", "time_game", "60"),
+			new MyVariable("float", "time_results", "5"),
+			new MyVariable("float", "time_ranking", "5"),
+		};
+
+		string str = GenerateAllVariables(variables);
 
 		Debug.Log(str);
 
-		//System.IO.File.WriteAllText("VariablesMain.cs", str);
+		System.IO.File.WriteAllText("VariablesMain.cs", str);
 	}
 }

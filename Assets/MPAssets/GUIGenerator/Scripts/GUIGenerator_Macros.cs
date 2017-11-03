@@ -84,11 +84,11 @@
 		public static string text_variableInstance = "\tpublic static " + replacement_type + " instance;\n\n";
 		public static string text_variableDeclaration = "\tpublic static " + replacement_type + replacement_name + ";\n";
 
-		public static string text_function_UpdateValues_Header = "\tpublic static void UpdateValues(GameObject panel){\n";
+		public static string text_function_UpdateValues_Header = "\tpublic static void UpdateValues(GameObject _panel){\n";
 		public static string text_function_UpdateValues_GetGameObjectParent = "\t\t" + replacement_variable + " = " + replacement_variableParent + ".gameObject;\n";
 		public static string text_function_UpdateValues_GetGameObject = "\t\t" + replacement_variable + " = " + replacement_variableParent + ".transform.Find(\"" + replacement_name + "\").gameObject;\n";
 		public static string text_function_UpdateValues_GetComponent = "\t\t" + replacement_variable + " = " + replacement_variableParent + ".GetComponent<" + replacement_type + ">();\n";
-		public static string text_function_UpdateValues_ReplacementParent = "panel";
+		public static string text_function_UpdateValues_ReplacementParent = "_panel";
 
 
 

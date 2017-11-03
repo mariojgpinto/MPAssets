@@ -77,13 +77,13 @@ public class UI_OtherMenuController : MonoBehaviour {
 
 	#region UNITY_CALLBACKS
 	// Use this for initialization
-	void Start () {
+	void Start() {
 		AssignEvents();
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-		
+	void Update() {
+
 	}
 	#endregion
 }
