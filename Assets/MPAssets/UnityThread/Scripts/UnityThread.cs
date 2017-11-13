@@ -23,7 +23,7 @@ namespace MPAssets {
 		// Used to know if whe have new Action function to execute. This prevents the use of the lock keyword every frame
 		private volatile static bool noActionQueueToExecuteUpdateFunc = true;
 
-
+#if (ENABLE_LATEUPDATE_FUNCTION_CALLBACK)
 		////////////////////////////////////////////////LATEUPDATE IMPL////////////////////////////////////////////////////////
 		//Holds actions received from another Thread. Will be coped to actionCopiedQueueLateUpdateFunc then executed from there
 		private static List<System.Action> actionQueuesLateUpdateFunc = new List<Action>();
@@ -33,9 +33,9 @@ namespace MPAssets {
 
 		// Used to know if whe have new Action function to execute. This prevents the use of the lock keyword every frame
 		private volatile static bool noActionQueueToExecuteLateUpdateFunc = true;
+#endif
 
-
-
+#if (ENABLE_FIXEDUPDATE_FUNCTION_CALLBACK)
 		////////////////////////////////////////////////FIXEDUPDATE IMPL////////////////////////////////////////////////////////
 		//Holds actions received from another Thread. Will be coped to actionCopiedQueueFixedUpdateFunc then executed from there
 		private static List<System.Action> actionQueuesFixedUpdateFunc = new List<Action>();
@@ -45,7 +45,7 @@ namespace MPAssets {
 
 		// Used to know if whe have new Action function to execute. This prevents the use of the lock keyword every frame
 		private volatile static bool noActionQueueToExecuteFixedUpdateFunc = true;
-
+#endif
 
 		//Used to initialize UnityThread. Call once before any function here
 		public static void initUnityThread(bool visible = true) {

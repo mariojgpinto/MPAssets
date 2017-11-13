@@ -48,13 +48,13 @@ public class MyDataTest {
 }
 
 public class VariableGeneration : MonoBehaviour {
-	List<MyVariable> myVariables = new List<MyVariable>() {
-		new MyVariable("int", "myInt", "0"),
-		new MyVariable("float", "myFloat", "1.0f"),
-		new MyVariable("string", "myString", "\"Default Value\""),
-		new MyVariable("List<string>", "myListOfStrings", "new List<string>(){\"str1\", \"str2\"}"),
-		new MyVariable("List<string>", "emptyList")
-	};
+	//List<MyVariable> myVariables = new List<MyVariable>() {
+	//	new MyVariable("int", "myInt", "0"),
+	//	new MyVariable("float", "myFloat", "1.0f"),
+	//	new MyVariable("string", "myString", "\"Default Value\""),
+	//	new MyVariable("List<string>", "myListOfStrings", "new List<string>(){\"str1\", \"str2\"}"),
+	//	new MyVariable("List<string>", "emptyList")
+	//};
 
 	string GenerateAllVariables(List<MyVariable> variables) {
 		string str = "";

@@ -65,5 +65,11 @@ namespace MPAssets {
 
 			return result;
 		}
+
+		public static void Swap<T>(System.Collections.Generic.IList<T> list, int indexA, int indexB) {
+			T tmp = list[indexA];
+			list[indexA] = list[indexB];
+			list[indexB] = tmp;
+		}
 	}
 }
