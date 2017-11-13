@@ -77,14 +77,16 @@ public class MPAssets_editor {
 	#endregion
 
 	#region LOG
-	[MenuItem("GameObject/MPAssets/Log/Log")]
+	//[MenuItem("GameObject/MPAssets/Log/Log")]
+	[MenuItem("GameObject/MPAssets/Log")]
 	private static void CreateLog() {
 		CreateObject_UI("Panel", Selection.activeGameObject);
 	}
 	#endregion
 
 	#region INPUT_MANAGER
-	[MenuItem("GameObject/MPAssets/InputManager/InputManager")]
+	//[MenuItem("GameObject/MPAssets/InputManager/InputManager")]
+	[MenuItem("GameObject/MPAssets/InputManager")]
 	private static void CreateInputManager() {
 		CreateObject_InputManager(Selection.activeGameObject);
 	}

@@ -1,12 +1,31 @@
-﻿using System.Collections;
+﻿#define MP_USE_COMBINATIONS
+
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 using MPAssets;
 
+
 namespace MPAssets {
+#if MP_USE_COMBINATIONS
+	[System.Serializable]
+	public class KeyCombination {
+		public string tag;
+		public List<KeyCode> list = new List<KeyCode>();
+		public UnityEvent onCombinationPressed = null;
+	}
+#endif
 	[Prefab("InputManager", true)]
 	public class InputManager : Singleton<InputManager> {
+		#region COMBINTATION
+		#if MP_USE_COMBINATIONS
+		public List<KeyCombination> combinations;
+		#endif
+		#endregion
+
 		#region SWIPE
 		public enum SWIPES {
 			UP,
@@ -97,6 +116,40 @@ namespace MPAssets {
 			//if(saveLast)
 			lastPosition = Input.mousePosition;
 			//saveLast = !saveLast;
+		}
+		#endregion
+
+		#region COMBINATIONS
+		public static void AddKeyCombination(string _tag, KeyCode key, UnityAction action = null) {
+			KeyCombination combo = new KeyCombination();
+
+			combo.tag = _tag;
+			combo.list.Add(key);
+
+			if (action != null) {
+				if (combo.onCombinationPressed == null)
+					combo.onCombinationPressed = new UnityEvent();
+				combo.onCombinationPressed.AddListener(action);
+			}
+
+			instance.combinations.Add(combo);
+		}
+
+		public static void AddKeyCombination(string _tag, List<KeyCode> keys, UnityAction action = null) {
+			KeyCombination combo = new KeyCombination();
+
+			combo.tag = _tag;
+			foreach (KeyCode key in keys) {
+				combo.list.Add(key);
+			}
+
+			if (action != null) {
+				if (combo.onCombinationPressed == null)
+					combo.onCombinationPressed = new UnityEvent();
+				combo.onCombinationPressed.AddListener(action);
+			}
+
+			instance.combinations.Add(combo);
 		}
 		#endregion
 
@@ -199,6 +252,32 @@ namespace MPAssets {
 					_longClick = false;
 				}
 			}
+
+			#if MP_USE_COMBINATIONS
+			if (combinations.Count > 0 && Input.anyKey) {
+				foreach (KeyCombination combination in combinations) {
+					int ac = 0;
+					for (int i = 0; i < combination.list.Count; ++i) {
+						if (i == combination.list.Count - 1) {
+							bool value = Input.GetKeyDown(combination.list[i]);
+							if (value)
+								ac++;
+						}
+						else {
+							bool value = Input.GetKey(combination.list[i]);
+							if (value)
+								ac++;
+						}
+						if (ac == combination.list.Count) {
+							Debug.Log("Combination: " + combination.tag);
+							if (combination.onCombinationPressed != null) {
+								combination.onCombinationPressed.Invoke();
+							}
+						}
+					}
+				}
+			}
+			#endif
 		}
 
 		//void OnGUI() {
