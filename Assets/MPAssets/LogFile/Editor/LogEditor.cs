@@ -83,6 +83,13 @@ public class LogEditor : Editor {
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(20);
+			GUIContent content = new GUIContent("Persitent Data Path:", "Use PersitentDataPath as parent folder");
+			EditorGUILayout.LabelField(content, GUILayout.Width(120));
+			_log.usePersitentDataPath = EditorGUILayout.Toggle(_log.usePersitentDataPath);
+			GUILayout.EndHorizontal();
+
+			GUILayout.BeginHorizontal();
+			GUILayout.Space(20);
 			GUILayout.Label("Log File: ", GUILayout.Width(120));
 			_log.log_file = EditorGUILayout.TextField(_log.log_file);
 			GUILayout.EndHorizontal();

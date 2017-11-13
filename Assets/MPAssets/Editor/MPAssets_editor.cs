@@ -18,23 +18,23 @@ public class MPAssets_editor {
 	static void CreateObject_Log(GameObject parent = null) {
 		Object obj = AssetDatabase.LoadAssetAtPath<Object>("Assets/MPAssets/LogFile/Prefabs/Log.prefab");
 		GameObject prefab = PrefabUtility.InstantiatePrefab(obj) as GameObject;
-		if (parent != null) {
-			prefab.transform.SetParent(parent.transform);
-			prefab.transform.localPosition = Vector3.zero;
-			prefab.transform.localScale = Vector3.zero;
-			prefab.transform.localRotation = Quaternion.Euler(Vector3.zero);
-		}
+		//if (parent != null) {
+		//	prefab.transform.SetParent(parent.transform);
+		//	prefab.transform.localPosition = Vector3.zero;
+		//	prefab.transform.localScale = Vector3.zero;
+		//	prefab.transform.localRotation = Quaternion.Euler(Vector3.zero);
+		//}
 	}
 
 	static void CreateObject_InputManager(GameObject parent = null) {
 		Object obj = AssetDatabase.LoadAssetAtPath<Object>("Assets/MPAssets/InputManager/Prefabs/InputManager.prefab");
 		GameObject prefab = PrefabUtility.InstantiatePrefab(obj) as GameObject;
-		if (parent != null) {
-			prefab.transform.SetParent(parent.transform);
-			prefab.transform.localPosition = Vector3.zero;
-			prefab.transform.localScale = Vector3.zero;
-			prefab.transform.localRotation = Quaternion.Euler(Vector3.zero);
-		}
+		//if (parent != null) {
+		//	prefab.transform.SetParent(parent.transform);
+		//	prefab.transform.localPosition = Vector3.zero;
+		//	prefab.transform.localScale = Vector3.zero;
+		//	prefab.transform.localRotation = Quaternion.Euler(Vector3.zero);
+		//}
 	}
 
 	static void CreateObject_UtilsScript(string name, GameObject parent = null) {
@@ -80,7 +80,7 @@ public class MPAssets_editor {
 	//[MenuItem("GameObject/MPAssets/Log/Log")]
 	[MenuItem("GameObject/MPAssets/Log")]
 	private static void CreateLog() {
-		CreateObject_UI("Panel", Selection.activeGameObject);
+		CreateObject_Log(Selection.activeGameObject);
 	}
 	#endregion
 

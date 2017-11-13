@@ -52,6 +52,7 @@ namespace MPAssets {
 
 		//LOG FILE
 		public bool useFile;
+		public bool usePersitentDataPath = true;
 		public LOG_PRIORITY logPriorityFile = LOG_PRIORITY.INFO;
 		public string log_file = "log.txt";
 
@@ -245,7 +246,12 @@ namespace MPAssets {
 
 		#region FILE
 		void WriteToFile(string str) {
-			System.IO.File.AppendAllText(Application.persistentDataPath + "/" + instance.log_file, str + "\n");
+			if (usePersitentDataPath) {
+				System.IO.File.AppendAllText(Application.persistentDataPath + "/" + instance.log_file, str + "\n");
+			}
+			else {
+				System.IO.File.AppendAllText(instance.log_file, str + "\n");
+			}
 		}
 		#endregion
 
