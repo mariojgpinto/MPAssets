@@ -18,23 +18,13 @@ public class MPAssets_editor {
 	static void CreateObject_Log(GameObject parent = null) {
 		Object obj = AssetDatabase.LoadAssetAtPath<Object>("Assets/MPAssets/LogFile/Prefabs/Log.prefab");
 		GameObject prefab = PrefabUtility.InstantiatePrefab(obj) as GameObject;
-		//if (parent != null) {
-		//	prefab.transform.SetParent(parent.transform);
-		//	prefab.transform.localPosition = Vector3.zero;
-		//	prefab.transform.localScale = Vector3.zero;
-		//	prefab.transform.localRotation = Quaternion.Euler(Vector3.zero);
-		//}
+		prefab.transform.SetAsLastSibling();
 	}
 
 	static void CreateObject_InputManager(GameObject parent = null) {
 		Object obj = AssetDatabase.LoadAssetAtPath<Object>("Assets/MPAssets/InputManager/Prefabs/InputManager.prefab");
 		GameObject prefab = PrefabUtility.InstantiatePrefab(obj) as GameObject;
-		//if (parent != null) {
-		//	prefab.transform.SetParent(parent.transform);
-		//	prefab.transform.localPosition = Vector3.zero;
-		//	prefab.transform.localScale = Vector3.zero;
-		//	prefab.transform.localRotation = Quaternion.Euler(Vector3.zero);
-		//}
+		prefab.transform.SetAsLastSibling();
 	}
 
 	static void CreateObject_UtilsScript(string name, GameObject parent = null) {

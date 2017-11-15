@@ -11,6 +11,7 @@ public class LogEditor : Editor {
 
 	void OnEnable() {
 		_log = (Log)target;
+
 	}
 
 	public override void OnInspectorGUI() {
@@ -27,6 +28,8 @@ public class LogEditor : Editor {
 		ServerInfo();
 
 		GoogleAnalyticsInfo();
+
+		EditorUtility.SetDirty(_log);
 	}
 
 	void ConsoleInfo() {
