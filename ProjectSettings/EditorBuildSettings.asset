@@ -8,3 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MPAssets/LogFile/Demo/TestLog.unity
     guid: 20cdcbe70165e21489828251e0e21bde
+  - enabled: 0
+    path: Assets/MPAssets/Camera/Demos/TestCamera.unity
+    guid: bab0abd506add2a418833d94b5d1354f
