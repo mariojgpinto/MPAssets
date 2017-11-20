@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define MP_USE_MPASSETSUI_MENU
+using UnityEngine;
 using UnityEditor;
 
 public class MPAssets_editor {
@@ -7,9 +8,9 @@ public class MPAssets_editor {
 		Object obj = AssetDatabase.LoadAssetAtPath<Object>("Assets/MPAssets/GUIGenerator/Prefabs/" + name + ".prefab");
 		GameObject prefab = PrefabUtility.InstantiatePrefab(obj) as GameObject;
 		if (parent != null) {
-			prefab.transform.SetParent(parent.transform);
+			prefab.transform.SetParent(parent.transform, false);
 			prefab.transform.localPosition = Vector3.zero;
-			prefab.transform.localScale = Vector3.zero;
+			prefab.transform.localScale = Vector3.one;
 			prefab.transform.localRotation = Quaternion.Euler(Vector3.zero);
 		}
 		prefab.name = prefab.name + "_";
@@ -83,49 +84,93 @@ public class MPAssets_editor {
 	#endregion
 
 	#region UI
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/Panel", priority = 0)]
+#else	
 	[MenuItem("GameObject/MPAssets/UI/Panel", priority = 0)]
+#endif
 	private static void CreatePanel() {
 		CreateObject_UI("Panel", Selection.activeGameObject);
 	}
-	[MenuItem("GameObject/MPAssets/UI/Text")]
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/Text", priority = 0)]
+#else
+	[MenuItem("GameObject/MPAssets/UI/Text", priority = 0)]
+#endif
 	private static void CreateText() {
 		CreateObject_UI("Button", Selection.activeGameObject);
 	}
-	[MenuItem("GameObject/MPAssets/UI/Image")]
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/Image", priority = 0)]
+#else
+	[MenuItem("GameObject/MPAssets/UI/Image", priority = 0)]
+#endif
 	private static void CreateImage() {
 		CreateObject_UI("Button", Selection.activeGameObject);
 	}
-	[MenuItem("GameObject/MPAssets/UI/Button")]
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/Button", priority = 0)]
+#else
+	[MenuItem("GameObject/MPAssets/UI/Button", priority = 0)]
+#endif
 	private static void CreateButton() {
 		CreateObject_UI("Button", Selection.activeGameObject);
 	}
-	[MenuItem("GameObject/MPAssets/UI/InputField")]
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/InputField", priority = 0)]
+#else
+	[MenuItem("GameObject/MPAssets/UI/InputField", priority = 0)]
+#endif
 	private static void CreateInputField() {
 		CreateObject_UI("InputField", Selection.activeGameObject);
 	}
-	[MenuItem("GameObject/MPAssets/UI/RawImage")]
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/RawImage", priority = 0)]
+#else
+	[MenuItem("GameObject/MPAssets/UI/RawImage", priority = 0)]
+#endif
 	private static void CreateRawImage() {
 		CreateObject_UI("Button", Selection.activeGameObject);
 	}
-	[MenuItem("GameObject/MPAssets/UI/Toggle")]
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/Toggle", priority = 0)]
+#else
+	[MenuItem("GameObject/MPAssets/UI/Toggle", priority = 0)]
+#endif
 	private static void CreateToggle() {
 		CreateObject_UI("Button", Selection.activeGameObject);
 	}
-	[MenuItem("GameObject/MPAssets/UI/Slider")]
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/Slider", priority = 0)]
+#else
+	[MenuItem("GameObject/MPAssets/UI/Slider", priority = 0)]
+#endif
 	private static void CreateSlider() {
-		CreateObject_UI("Button", Selection.activeGameObject);
+		CreateObject_UI("Slider", Selection.activeGameObject);
 	}
-	//[MenuItem("GameObject/MPAssets/UI/ScrollBar")]
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/ScrollBar", priority = 0)]
+#else
+	[MenuItem("GameObject/MPAssets/UI/ScrollBar", priority = 0)]
+#endif
 	//private static void CreateScrollBar() {
 	//	CreateObject("ScrollBar", Selection.activeGameObject);
 	//}
-	[MenuItem("GameObject/MPAssets/UI/ScrollView")]
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/ScrollView", priority = 0)]
+#else
+	[MenuItem("GameObject/MPAssets/UI/ScrollView", priority = 0)]
+#endif
 	private static void CreateScrollView() {
 		CreateObject_UI("ScrollView", Selection.activeGameObject);
 	}
-	[MenuItem("GameObject/MPAssets/UI/Dropdown")]
+#if MP_USE_MPASSETSUI_MENU
+	[MenuItem("GameObject/MPAssetsUI/Dropdown", priority = 0)]
+#else
+	[MenuItem("GameObject/MPAssets/UI/Dropdown", priority = 0)]
+#endif
 	private static void CreateDropdown() {
 		CreateObject_UI("Dropdown", Selection.activeGameObject);
 	}
-	#endregion
+#endregion
 }

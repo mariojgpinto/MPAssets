@@ -16,7 +16,6 @@ public class GUIGeneratorEditor : Editor
 	static List<string> options = new List<string>();
 
 	public GameObject myCanvas;
-	public GameObject myCamera;
 	//static int selectedFocus = 0;
 	static List<string> optionsFocus = new List<string>();
 	static GUIGeneratorEditor() {
@@ -39,7 +38,6 @@ public class GUIGeneratorEditor : Editor
 	//	//Debug.Log("OnEnable");
 		instance = this;
 		myCanvas = GameObject.Find("Canvas");
-		myCamera = GameObject.Find("Main Camera");
 	//	EditorApplication.hierarchyWindowChanged += HierarchyChanged;
 	}
 
@@ -159,7 +157,7 @@ public class GUIGeneratorEditor : Editor
 		//	myCanvas.transform.position = myCanvas.transform.FindChild(oldValue).localPosition;
 		//	// 
 		//}
-
+		EditorUtility.SetDirty(myScript);
 	}
 
 	void GenerateFiles(bool isPersitent = true){

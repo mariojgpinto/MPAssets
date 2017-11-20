@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 1123176117}
   - component: {fileID: 1123176119}
   m_Layer: 0
-  m_Name: CameraController
+  m_Name: WebCamController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

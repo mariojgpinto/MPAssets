@@ -1,4 +1,4 @@
-﻿#define MP_USE_COMBINATIONS
+﻿#define MP_USE_KEY_COMBINATIONS
 
 using System;
 using System.Collections;
@@ -10,7 +10,7 @@ using MPAssets;
 
 
 namespace MPAssets {
-#if MP_USE_COMBINATIONS
+#if MP_USE_KEY_COMBINATIONS
 	[System.Serializable]
 	public class KeyCombination {
 		public string tag;
@@ -21,7 +21,7 @@ namespace MPAssets {
 	[Prefab("InputManager", true)]
 	public class InputManager : Singleton<InputManager> {
 		#region COMBINTATION
-		#if MP_USE_COMBINATIONS
+		#if MP_USE_KEY_COMBINATIONS
 		public List<KeyCombination> combinations;
 		#endif
 		#endregion
@@ -121,9 +121,9 @@ namespace MPAssets {
 
 		#region COMBINATIONS
 		public static void AddKeyCombination(string _tag, KeyCode key, UnityAction action = null) {
-			KeyCombination combo = new KeyCombination();
-
-			combo.tag = _tag;
+			KeyCombination combo = new KeyCombination {
+				tag = _tag
+			};
 			combo.list.Add(key);
 
 			if (action != null) {
@@ -136,9 +136,9 @@ namespace MPAssets {
 		}
 
 		public static void AddKeyCombination(string _tag, List<KeyCode> keys, UnityAction action = null) {
-			KeyCombination combo = new KeyCombination();
-
-			combo.tag = _tag;
+			KeyCombination combo = new KeyCombination {
+				tag = _tag
+			};
 			foreach (KeyCode key in keys) {
 				combo.list.Add(key);
 			}
@@ -253,7 +253,7 @@ namespace MPAssets {
 				}
 			}
 
-			#if MP_USE_COMBINATIONS
+			#if MP_USE_KEY_COMBINATIONS
 			if (combinations.Count > 0 && Input.anyKey) {
 				foreach (KeyCombination combination in combinations) {
 					int ac = 0;
